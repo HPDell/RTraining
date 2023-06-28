@@ -1,0 +1,19 @@
+project:
+  type: book
+
+book:
+  title: "R语言空间数据分析入门教程"
+  author: "HPDell"
+  date: "1/19/2019"
+  chapters:
+    - index.qmd
+    - 01-数据读写.ipynb
+    - 02-数据预处理.ipynb
+    - 03-数据可视化.ipynb
+    - 04-数据分析.ipynb
+
+format:
+  html:
+    theme: cosmo
+
+lang: zh
