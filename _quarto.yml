@@ -1,5 +1,7 @@
 project:
   type: book
+  post-render:
+    - _post_zipdata.R
 
 book:
   title: "R语言空间数据分析入门教程"
@@ -15,5 +17,7 @@ book:
 format:
   html:
     theme: cosmo
+    resources: 
+      - "data/*"
 
 lang: zh
