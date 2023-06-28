@@ -21,3 +21,6 @@ format:
       - "data/*"
 
 lang: zh
+
+execute: 
+  freeze: auto

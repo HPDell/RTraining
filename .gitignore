@@ -52,5 +52,9 @@ rsconnect/
 /.quarto/
 /_site/
 /_book/
+site_libs/
 .ipynb_checkpoints
 output-*
+*_files
+*.html
+*.rmarkdown

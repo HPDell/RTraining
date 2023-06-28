@@ -105,6 +105,7 @@ demo.suspect[which(demo.suspect$gender == 'M'),]
 以下是一些 `select` 函数的示例
 
 ```{r}
+library(dplyr)
 select(demo.suspect, name)  # 获取 name 列
 ```
 
@@ -169,7 +170,7 @@ select(filter(demo.suspect, shoe.size < 42), "name":"gender")
 使用一次 `group_by()` 函数，数据中增加一层分组条件；使用一次 `summarise()` 函数，数据中减少一次分组条件。
 
 ```{r}
-summarise(group_by(demo.suspect, gender), height.mean = mean(height), weight.mean = mean(weight), married.num = length(which(is.married)))
+summarise(group_by(demo.suspect, gender), height.mean = mean(height), weight.mean = mean(weight))
 ```
 
 > 这里用到了 `mean()` 和 `length()` 两个函数，其作用分别是计算平均数和向量长度。
@@ -179,7 +180,7 @@ summarise(group_by(demo.suspect, gender), height.mean = mean(height), weight.mea
 另一种是使用 R 自带的 `aggregate` 函数，对数据进行聚合。例如
 
 ```{r}
-aggregate(demo.suspect[, c("height", "weight", "shoe.size", "BMI")], by = list(demo.suspect$gender), FUN = mean)
+aggregate(demo.suspect[, c("height", "weight")], by = list(demo.suspect$gender), FUN = mean)
 ```
 
 该函数具有如下参数：
@@ -217,7 +218,7 @@ list(
 在 `aggregrate` 函数中，如果 `by` 参数传入的列表只有几个键值对，那么就按照这几个条件进行分组。多个条件分组的示例如下
 
 ```{r}
-aggregate(demo.suspect[, c("height", "weight", "shoe.size", "BMI")], by = list(demo.suspect$gender, demo.suspect$is.married), FUN = mean)
+aggregate(demo.suspect[, c("height", "weight")], by = list(demo.suspect$gender), FUN = mean)
 ```
 
 #### 函数类型

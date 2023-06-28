@@ -133,8 +133,7 @@ library(GWmodel)
 londonhp.indep.vars <- colnames(londonhp@data)[-1]
 londonhp.depen.vars <- colnames(londonhp@data)[1]
 londonhp.model.sel <- gwr.model.selection(DeVar = londonhp.depen.vars, InDeVars = londonhp.indep.vars, data = londonhp, 
-                                          bw = Inf, adaptive = T, kernel = "gaussian", longlat = F,
-                                          parallel.method = "omp", parallel.arg = 8)
+                                          bw = Inf, adaptive = T, kernel = "gaussian", longlat = F)
 londonhp.model.sort <- gwr.model.sort(londonhp.model.sel, length(londonhp.indep.vars), londonhp.model.sel[[2]][,2])
 ```
 
@@ -169,9 +168,9 @@ londonhp.model.formula
 
 ```{r}
 #| scrolled: true
-londonhp.bw <- bw.gwr(londonhp.model.formula, londonhp,
-                      kernel = "gaussian", adaptive = T, longlat = F,
-                      parallel.method = "omp", parallel.arg = 8)
+londonhp.bw <- bw.gwr(
+  londonhp.model.formula, londonhp,
+  kernel = "gaussian", adaptive = T, longlat = F)
 ```
 
 返回的 `londonhp.bw` 即是最优带宽值。
@@ -181,9 +180,9 @@ londonhp.bw <- bw.gwr(londonhp.model.formula, londonhp,
 在选好模型和带宽的基础上，使用 `gwr.basic()` 函数解算模型。
 
 ```{r}
-londonhp.model.gwr <- gwr.basic(londonhp.model.formula, londonhp,
-                                bw = londonhp.bw, kernel = "gaussian", adaptive = T, longlat = F,
-                                parallel.method = "omp", parallel.arg = 8)
+londonhp.model.gwr <- gwr.basic(
+  londonhp.model.formula, londonhp,
+  bw = londonhp.bw, kernel = "gaussian", adaptive = T, longlat = F)
 londonhp.model.gwr
 ```
 
@@ -295,10 +294,5 @@ tm_shape(londonborough) + tm_polygons(col = "white") + tm_shape(londonhp.gwpca$S
 londonhp.loadings <- londonhp.gwpca$loadings[,,1]
 plot(londonborough, asp = 1, xaxt = "n", yaxt = "n", xlab = "", ylab = "", bty = "n", col = "white")
 glyph.plot(londonhp.loadings, londonhp.gwpca$SDF@coords, add = TRUE)
-```
-
-```{r}
-plot(bss.background, asp = 1, type = "l", xaxt = "n", yaxt = "n", 
-   xlab = "", ylab = "", bty = "n", col = "grey")
 ```
 

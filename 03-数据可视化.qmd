@@ -429,7 +429,7 @@ tm_shape(World) + tm_polygons(col = "white") + tm_shape(rivers) + tm_lines(col =
 
 ```{r}
 data(metro)
-tm_shape(World) + tm_polygons(col = "white") + tm_shape(metro) + tm_symbols(size = "pop2020", col = "")
+tm_shape(World) + tm_polygons(col = "white") + tm_shape(metro) + tm_symbols(size = "pop2020", col = "pop2020")
 ```
 
 ### 指北针和比例尺

@@ -496,6 +496,7 @@ class(demo.csv.point)
 既然有 `readOGR()` 函数，相应的就有 `writeOGR()` 函数，该函数可以将 `Spatial*DataFrame` 类型的变量输出到 ESRI Shapefile 格式的文件中。
 
 ```{r}
+#| eval: false
 writeOGR(demo.csv.point, "output-01/WHSHP.shp", layer = "WHSHP", driver = "ESRI Shapefile")
 ```
 
