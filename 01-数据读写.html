@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-Hans" xml:lang="zh-Hans"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.361">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>R语言空间数据分析入门教程 - 1&nbsp; 数据读写</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./02-数据预处理.html" rel="next">
+<link href="./index.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "没有结果",
+    "search-matching-documents-text": "匹配的文档",
+    "search-copy-link-title": "复制搜索链接",
+    "search-hide-matches-text": "隐藏其它匹配结果",
+    "search-more-match-text": "更多匹配结果",
+    "search-more-matches-text": "更多匹配结果",
+    "search-clear-button-title": "清除",
+    "search-detached-cancel-button-title": "取消",
+    "search-submit-button-title": "提交",
+    "search-label": "搜索"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="切换侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./01-数据读写.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">数据读写</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="切换侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R语言空间数据分析入门教程</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="搜索"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">前言</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-数据读写.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">数据读写</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-数据预处理.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">数据预处理</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-数据可视化.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">数据可视化</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-数据分析.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">数据分析</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">目录</h2>
+   
+  <ul>
+  <li><a href="#前言数据类型文件格式扩展名之间的关系" id="toc-前言数据类型文件格式扩展名之间的关系" class="nav-link active" data-scroll-target="#前言数据类型文件格式扩展名之间的关系"><span class="header-section-number">1.1</span> 前言：数据类型、文件格式、扩展名之间的关系</a></li>
+  <li><a href="#基础数据读写" id="toc-基础数据读写" class="nav-link" data-scroll-target="#基础数据读写"><span class="header-section-number">1.2</span> 基础数据读写</a>
+  <ul class="collapse">
+  <li><a href="#表数据" id="toc-表数据" class="nav-link" data-scroll-target="#表数据"><span class="header-section-number">1.2.1</span> 表数据</a></li>
+  <li><a href="#表数据读取" id="toc-表数据读取" class="nav-link" data-scroll-target="#表数据读取"><span class="header-section-number">1.2.2</span> 表数据读取</a></li>
+  <li><a href="#表数据写入" id="toc-表数据写入" class="nav-link" data-scroll-target="#表数据写入"><span class="header-section-number">1.2.3</span> 表数据写入</a></li>
+  <li><a href="#r-语言二进制数据文件" id="toc-r-语言二进制数据文件" class="nav-link" data-scroll-target="#r-语言二进制数据文件"><span class="header-section-number">1.2.4</span> R 语言二进制数据文件</a></li>
+  </ul></li>
+  <li><a href="#空间数据的读写" id="toc-空间数据的读写" class="nav-link" data-scroll-target="#空间数据的读写"><span class="header-section-number">1.3</span> 空间数据的读写</a>
+  <ul class="collapse">
+  <li><a href="#esri-shapefile-文件空间数据的读取" id="toc-esri-shapefile-文件空间数据的读取" class="nav-link" data-scroll-target="#esri-shapefile-文件空间数据的读取"><span class="header-section-number">1.3.1</span> ESRI Shapefile 文件空间数据的读取</a></li>
+  <li><a href="#将表数据转换为空间数据" id="toc-将表数据转换为空间数据" class="nav-link" data-scroll-target="#将表数据转换为空间数据"><span class="header-section-number">1.3.2</span> 将表数据转换为空间数据</a></li>
+  <li><a href="#将空间数据输出到文件中" id="toc-将空间数据输出到文件中" class="nav-link" data-scroll-target="#将空间数据输出到文件中"><span class="header-section-number">1.3.3</span> 将空间数据输出到文件中</a></li>
+  </ul></li>
+  <li><a href="#附注rgdal-支持的格式" id="toc-附注rgdal-支持的格式" class="nav-link" data-scroll-target="#附注rgdal-支持的格式"><span class="header-section-number">1.4</span> 附注：rgdal 支持的格式</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">数据读写</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>本节将分为两部分：“基础数据读写”和“空间数据读写”。通过对数据进行输入输出操作，认识 R 中的各种数据类型以及一些运算符和函数。 主要内容有</p>
+<ul>
+<li>基础数据读写</li>
+<li>空间数据读写</li>
+</ul>
+<p>相关的 R 语言的知识：</p>
+<ul>
+<li>数据类型：整数、浮点数、字符串、逻辑值、向量、矩阵、data.frame</li>
+<li>运算符：四则运算符、矩阵乘法和 <code>&lt;-</code> <code>:</code> <code>[]</code> <code>%in%</code> 运算符</li>
+<li>函数：参数的传值方法、变长参数</li>
+</ul>
+<section id="前言数据类型文件格式扩展名之间的关系" class="level2" data-number="1.1">
+<h2 data-number="1.1" class="anchored" data-anchor-id="前言数据类型文件格式扩展名之间的关系"><span class="header-section-number">1.1</span> 前言：数据类型、文件格式、扩展名之间的关系</h2>
+<p>严格地说，这三者并不是一一对应的。这三者相关的定义可以有很多，但是在本教程中，约定：</p>
+<ul>
+<li>数据类型指数据存在的形式。如整型是数据以整数的形式存在、向量是指数据以向量的形式存在、表指数据以行列的形式存在等。这个类型并不局限于 R 语言的类型，而是一种抽象的、语言无关的数据组织形式。</li>
+<li>文件格式是指某种数据类型在一个文件中的组织形式。如“逗号分隔值”格式是表格数据在文件中以逗号分隔文本文件的组织形式，相应的也会有 Excel 表格的格式、关系数据库中文件的格式。</li>
+<li>扩展名是指文件名最后一个 <code>.</code> 符号后的字符串，一般用于让计算机系统便于选择合适的软件打开该文件。例如，使用 Word 软件创建的文档，如果后缀名为 <code>docx</code> ，则系统默认使用 Word 软件打开。但如果后缀名改为 <code>zip</code> ，则系统默认使用解压缩软件打开。</li>
+</ul>
+<p>但有时，这三者有一些约定的关系，例如后缀名为 <code>csv</code> 的文件，文件格式是“逗号分隔值”，存储的是表类型的数据。 当说到 <code>csv</code> 文件时，可以默认是一个表数据。 所以很多时候这三者会被混用，但仍需注意其本身含义并不一样。</p>
+</section>
+<section id="基础数据读写" class="level2" data-number="1.2">
+<h2 data-number="1.2" class="anchored" data-anchor-id="基础数据读写"><span class="header-section-number">1.2</span> 基础数据读写</h2>
+<p>该部分主要讲解分隔符形式存储的数据，以及 R 特有数据格式文件的读写。某种程度上，空间数据也可以使用基础数据的形式进行存储，因此基础数据的读写时非常重要的。</p>
+<p>在对数据读写之前，需要设置工作目录，到 <code>data/</code> 文件夹所存在的目录。设置方法是使用 <code>setwd()</code> 函数，参数是 <code>data/</code> 文件夹所存在的目录的路径。</p>
+<blockquote class="blockquote">
+<p>在 R 控制台中，打开 R 控制台的目录，就是 R 的工作目录。 在 RStudio 中，创建并保存 R 脚本文件后，可以使用菜单中 Session -&gt; Set Working Directory -&gt; To Source File Location 来设置当前工作目录。 在 Jupyter 中，打开 ipynb 文件后，工作目录自动处于该文件所在的目录。</p>
+</blockquote>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">setwd</span>(<span class="st">"."</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="表数据" class="level3" data-number="1.2.1">
+<h3 data-number="1.2.1" class="anchored" data-anchor-id="表数据"><span class="header-section-number">1.2.1</span> 表数据</h3>
+<p>表数据，是一种常见的数据类型，用列表示的一个或更多的数据种类，每行包含一个唯一的数据实体，这些数据是被列定义的种类。 表又称“关系”，列又称“字段”，行又称“记录”。一般情况下，同一列中的数据类型是相同的。 在统计学研究中，行对应了一个样本，列对应了样本中的一个属性。 这种数据类型就可以轻松的描述样本的所有特征。</p>
+<p>由于表示“表”这一数据类型的文件格式非常多，本节主要讲解以分隔符形式存储的表数据，如 CSV 和 TSV 等，这里以 CSV 文件为例。在 R 中，使用 Excel 文件存储的数据也可以进行读取，请自行参考《R语言空间数据处理与分析实践教程》一书。</p>
+<p>逗号分隔值（Comma Seperated Values, CSV）是一个常用的文件格式，以纯文本形式存储表格数据，但该文件格式并没有统一通行的规范。 一般地，该类型的文件一般在第一行记录各列的名字。有的文件也在第一列记录该行的索引，可称该列为“索引列”，索引列一般没有列名。 值得注意的是，严谨的 CSV 文件一般会用到以下四个特殊字符：</p>
+<ul>
+<li>分隔符：通常使用 <code>,</code> ，用于分隔不同列的名称和值</li>
+<li>引号：通常使用 <code>"</code> ，在一对引号中的所有内容都被认为是同一个字段的值，其中的 <code>,</code> 也被认为是字段值的一部分</li>
+<li>注释：通常使用 <code>#</code> ，出现在该符号后面的文字认为是注释，不算在字段值内</li>
+<li>小数点：通常使用 <code>.</code> ，用于分隔数字类型值得整数部分和小数部分</li>
+</ul>
+<p>当然，最常见的 CSV 文件一般只使用分隔符，这就会造成一些问题。</p>
+</section>
+<section id="表数据读取" class="level3" data-number="1.2.2">
+<h3 data-number="1.2.2" class="anchored" data-anchor-id="表数据读取"><span class="header-section-number">1.2.2</span> 表数据读取</h3>
+<p>在 R 中，对 CSV 文件的读取是通过 <code>read.csv</code> 函数完成的。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>demo.table <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="at">file =</span> <span class="st">"data/LNHP03.csv"</span>, <span class="at">header =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">","</span>, <span class="at">quote =</span> <span class="st">"</span><span class="sc">\"</span><span class="st">"</span>, <span class="at">dec =</span> <span class="st">"."</span>, <span class="at">comment.char =</span> <span class="st">"#"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>该语句创建了名为 <code>demo.table</code> 的变量，这个变量中记录了程序读取文件 <code>data/LNHP03.csv</code> 的结果。</p>
+<p>在函数 <code>read.csv</code> 中，包含如下几个参数：</p>
+<table class="table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>参数名</th>
+<th>类型</th>
+<th>含义</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>file</code></td>
+<td>character</td>
+<td>输入文件路径（相对路径或绝对路径）</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>header</code></td>
+<td>logical</td>
+<td>文件中是否包含列名。如果值是 <code>TRUE</code> ，则认为第一行是列名；否则认为表中没有列名，读取后再进行指定。</td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="odd">
+<td><code>sep</code></td>
+<td>character</td>
+<td>分隔符</td>
+<td><code>,</code></td>
+</tr>
+<tr class="even">
+<td><code>quote</code></td>
+<td>character</td>
+<td>引号</td>
+<td><code>"</code></td>
+</tr>
+<tr class="odd">
+<td><code>dec</code></td>
+<td>character</td>
+<td>小数点</td>
+<td><code>.</code></td>
+</tr>
+<tr class="even">
+<td><code>comment.char</code></td>
+<td>character</td>
+<td>注释</td>
+<td><code>#</code></td>
+</tr>
+</tbody>
+</table>
+<p>在 R 中，如果一个函数各个参数是按照顺序进行赋值的，就不需要填写参数名。如果不是，则需要指定参数名。</p>
+<p>在 R 中，具有默认值的参数，在调用函数时，可以不传值。 对于该函数而言，除了第一个参数 <code>file</code> 必须指定以外，其余三个参数在使用时可以不进行指定，此时将采用默认值。 只有当文件中所使用的符号与默认值不同时，才需要进行指定。例如</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>demo.table <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/LNHP03.csv"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="查看数据" class="level4" data-number="1.2.2.1">
+<h4 data-number="1.2.2.1" class="anchored" data-anchor-id="查看数据"><span class="header-section-number">1.2.2.1</span> 查看数据</h4>
+<p>我们通过以下语句可以输出这个变量前5行的值</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(demo.table)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>在输出的表格中，可以很清楚地看到列名、列类型、行名以及各个样本各个字段的值。 变量 <code>demo.table</code> 的类型，是一种名为 <code>data.frame</code> 的类型， R 语言中使用这种数据类型来表示表格数据。</p>
+<p>我们可以使用以下操作查看这个表格数据的一些信息</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">nrow</span>(demo.table)  <span class="co"># 行数</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ncol</span>(demo.table)  <span class="co"># 列数</span></span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(demo.table)   <span class="co"># 各维度的长度</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(demo.table)  <span class="co"># 行名</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(demo.table)  <span class="co"># 列名</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>有关 <code>data.frame</code> 类型变量的相关操作，在后续教程中会进行详细的讲解。</p>
+</section>
+<section id="数量类型" class="level4" data-number="1.2.2.2">
+<h4 data-number="1.2.2.2" class="anchored" data-anchor-id="数量类型"><span class="header-section-number">1.2.2.2</span> 数量类型</h4>
+<p>可以看到，不同的列具有不同的数据类型，有的标注的是 <code>chr</code> ，有的标注的是 <code>dbl</code> 或者 <code>int</code> 。而在参数中，我们有一个参数的类型是 <code>logical</code> ，这就是 R 中的四种数量类型：</p>
+<ul>
+<li><code>chr</code> 代表字符串（character），表示文本</li>
+<li><code>dbl</code> 代表浮点数（numeric），也是 R 中数字字面量的默认类型。该类型有几个特殊取值，<code>Inf</code> 表示无限数，<code>NaN</code> 表示“Note a Number”，可能是由于计算错误导致的。</li>
+<li><code>int</code> 代表整数</li>
+<li><code>logical</code> 该表逻辑值，取值为 <code>TRUE</code> 或 <code>FALSE</code> 或 <code>NA</code>。<code>TRUE</code> 可以简写为 <code>T</code> ，<code>FALSE</code> 可以简写为 <code>F</code> 。</li>
+</ul>
+<p>这些数据类型的用法和 Python 、 Java 等高级语言并没有太大区别。如果要查看某个数据的类型，可以使用 <code>class</code> 函数，例如</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="dv">1</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="fl">1.0</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(<span class="st">"1"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>这些数据类型可以进行转换，使用如下一些“as 族”函数：</p>
+<ul>
+<li>as.character</li>
+<li>as.numeric</li>
+<li>as.integer</li>
+<li>…</li>
+</ul>
+<p>类似于其他编程语言中的强制类型转换。注意 <code>as.integer</code> 不是四舍五入，而是下取整。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.character</span>(<span class="fl">1.5</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(<span class="st">"1.5"</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">as.integer</span>(<span class="fl">1.5</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>标量类型可以使用常用的运算符，如 <code>+</code> <code>-</code> <code>*</code> <code>/</code> ，<code>%%</code> 表示取模运算， <code>%\%</code> 表示整除运算，其他一些运算符和别的编程语言没有什么区别。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">+</span><span class="dv">2</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">*</span><span class="dv">2</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">/</span><span class="dv">2</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="sc">%%</span> <span class="dv">3</span></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="dv">10</span> <span class="sc">%/%</span> <span class="dv">3</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">&gt;</span> <span class="dv">1</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">&gt;=</span> <span class="dv">1</span></span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="cn">TRUE</span> <span class="sc">|</span> <span class="cn">FALSE</span></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="cn">TRUE</span> <span class="sc">&amp;</span> <span class="cn">FALSE</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="cn">TRUE</span> <span class="sc">||</span> <span class="cn">FALSE</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="cn">TRUE</span> <span class="sc">&amp;&amp;</span> <span class="cn">FALSE</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="赋值运算符" class="level4" data-number="1.2.2.3">
+<h4 data-number="1.2.2.3" class="anchored" data-anchor-id="赋值运算符"><span class="header-section-number">1.2.2.3</span> 赋值运算符</h4>
+<p>在上述语句中，使用了一个运算符 <code>&lt;-</code> ，该运算符的含义与“深拷贝”比较类似，用于将函数返回值保存到变量中，或者将一个变量复制一份保存到零一个变量中。 在 R 语言中，变量赋值前不需要提前声明，随时使用随时创建，所以 <code>=</code> 和 <code>&lt;-</code> 都可以创建变量。 这两个符号在实际使用起来区别不是很大，这里就不进行区分了，但需要注意官方推荐使用 <code>&lt;-</code> 而不是 <code>=</code> 。</p>
+<p>例如，将 <code>demo.table</code> 复制一份到变量 <code>londonhp</code> 中，则使用如下语句</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>londonhp <span class="ot">&lt;-</span> demo.table</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="表数据写入" class="level3" data-number="1.2.3">
+<h3 data-number="1.2.3" class="anchored" data-anchor-id="表数据写入"><span class="header-section-number">1.2.3</span> 表数据写入</h3>
+<p>有 <code>read.csv</code> 进行读取，相应地就有 <code>write.csv</code> 进行写入。先看示例</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">write.table</span>(<span class="at">x =</span> demo.table, <span class="at">file =</span> <span class="st">"output-01/demo.table.csv"</span>, <span class="at">append =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>            <span class="at">quote =</span> <span class="cn">TRUE</span>, <span class="at">sep =</span> <span class="st">","</span>, <span class="at">eol =</span> <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>, <span class="at">na =</span> <span class="st">"NA"</span>, <span class="at">dec =</span> <span class="st">"."</span>, </span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>            <span class="at">row.names =</span> <span class="cn">FALSE</span>, <span class="at">col.names =</span> <span class="cn">TRUE</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>除了 <code>sep</code> <code>dec</code> 等参数和 <code>read.csv</code> 的含义相同外，该函数具有其他一些参数：</p>
+<table class="table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>参数名</th>
+<th>类型</th>
+<th>含义</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>x</code></td>
+<td>object</td>
+<td>要输出到文件中的对象</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>file</code></td>
+<td>character</td>
+<td>输出文件路径（相对路径或绝对路径）</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>append</code></td>
+<td>logical</td>
+<td>是否追加到输出文件中。如果值是 <code>TRUE</code> ，则在已有文件后面继续添加数据；否则重新创建文件。</td>
+<td><code>FALSE</code></td>
+</tr>
+<tr class="even">
+<td><code>quote</code></td>
+<td>logical/vector(numeric)</td>
+<td>是否将值使用引号引起来，或指定哪几列的值应当使用引号引起来</td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="odd">
+<td><code>sep</code></td>
+<td>character</td>
+<td>分隔符</td>
+<td><code>\n</code></td>
+</tr>
+<tr class="even">
+<td><code>eol</code></td>
+<td>character</td>
+<td>如果某一行某一列的值是 <code>NA</code>，则用什么字符表示</td>
+<td><code>"NA"</code></td>
+</tr>
+<tr class="odd">
+<td><code>row.names</code></td>
+<td>logical/vector(character)</td>
+<td>是否输出行名，或输出什么行名</td>
+<td><code>TRUE</code></td>
+</tr>
+<tr class="even">
+<td><code>col.names</code></td>
+<td>logical/vector(character)</td>
+<td>是否输出列名，或输出什么列名</td>
+<td><code>TRUE</code></td>
+</tr>
+</tbody>
+</table>
+<section id="向量" class="level4" data-number="1.2.3.1">
+<h4 data-number="1.2.3.1" class="anchored" data-anchor-id="向量"><span class="header-section-number">1.2.3.1</span> 向量</h4>
+<p>值得注意的是，有三个参数可以接收多种类型，而可选的参数类型，都是 <code>vector</code> 类型。该类型是 R 中非常重要的数据类型之一：向量。</p>
+<p>向量是一系列数量的一维数组，一般情况下，这些数量具有相同的类型。在 R 中，向量都是列向量。</p>
+<p>创建向量的方法有很多，例如</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">4</span>)  <span class="co"># 将一组值组合到一个向量中</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">numeric</span>(<span class="dv">10</span>)  <span class="co"># 创建 10 个元素的 numeric 类型的向量，默认值全为 0</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="st">"x"</span>, <span class="st">"y"</span>)</span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a><span class="fu">character</span>(<span class="dv">4</span>)  <span class="co"># 创建 4 个元素的 character 类型的向量，默认值全为空字符串</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>二元运算符 <code>:</code> 表示生成一个向量，向量以第一个操作数作为第一个元素，以后每个元素比前一个元素增 1，并且小于第二个操作数。 所以一般用于生成一个整数序列，为了体现这个特点，本教程称以这种方式生成的向量为“序列”</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fl">1.1</span><span class="sc">:</span><span class="fl">4.0</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>如果要取某一个向量中的第 <span class="math inline">\(i\)</span> 个元素，直接使用 <code>变量名[索引]</code> 即可，注意这里的 <code>索引</code> 是从 1 开始计算的，可以是整数、序列、整数类型的向量、逻辑类型的向量。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>demo.vector.numeric <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>demo.vector.numeric</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>demo.vector.numeric[<span class="dv">1</span>]</span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a>demo.vector.numeric[<span class="dv">5</span><span class="sc">:</span><span class="dv">6</span>]</span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>demo.vector.numeric[<span class="fu">c</span>(F, T, T, F, F, T, T, F, F, T)]</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>其中，整数、整数类型的向量中的元素可以是正整数也可以是负整数，如果是负整数，则表示“出去该元素以外的元素”</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>demo.vector.numeric[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>)]</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>如果要判断一个值或一组值是否在向量中，使用 <code>%in%</code> 运算符，根据返回的 TRUE 或 FALSE 判断。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span> <span class="sc">%in%</span> demo.vector.numeric</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">5</span>,<span class="dv">20</span>) <span class="sc">%in%</span> demo.vector.numeric</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>向量可以与向量或者数量进行数量运算或逻辑运算。 当向量与数量进行数量运算时，是向量的每个元素与该数量进行运算。 向量与向量进行数量运算时，是两个向量对应位置的元素进行运算，这两个向量不一定要等长，但最好长向量的长度是短向量的长度的整数倍。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">-</span> <span class="dv">1</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">*</span> <span class="dv">2</span></span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">^</span> <span class="dv">2</span></span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">/</span> <span class="dv">10</span></span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">%%</span> <span class="dv">10</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">%/%</span> <span class="dv">10</span></span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">&gt;</span> <span class="dv">2</span></span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">&lt;</span> <span class="dv">2</span></span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">&gt;=</span> <span class="dv">2</span></span>
+<span id="cb16-11"><a href="#cb16-11" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">&lt;=</span> <span class="dv">2</span></span>
+<span id="cb16-12"><a href="#cb16-12" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">==</span> <span class="dv">2</span></span>
+<span id="cb16-13"><a href="#cb16-13" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">+</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span>
+<span id="cb16-14"><a href="#cb16-14" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>) <span class="sc">*</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">10</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>向量中元素的类型可以整体进行转换，还是使用“as 族”函数</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.character</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>))</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">as.integer</span>(<span class="fu">c</span>(<span class="fl">1.1</span><span class="sc">:</span><span class="fl">4.0</span>))</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="fu">as.numeric</span>(<span class="fu">c</span>(<span class="st">"1.0"</span>, <span class="st">"1.3"</span>, <span class="st">"1.5"</span>))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>当向量与数量或向量进行逻辑运算时，运算方法和数量运算还是一样的，但是此时 <code>|</code> <code>&amp;</code> 两个运算符和 <code>||</code> <code>&amp;&amp;</code> 两个运算符会产生不一样的结果。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>) <span class="sc">|</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>) <span class="sc">||</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>) <span class="sc">||</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>) <span class="sc">||</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb18-5"><a href="#cb18-5" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>) <span class="sc">&amp;</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb18-6"><a href="#cb18-6" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>) <span class="sc">&amp;&amp;</span> <span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span>
+<span id="cb18-7"><a href="#cb18-7" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="cn">TRUE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>, <span class="cn">FALSE</span>) <span class="sc">&amp;&amp;</span> <span class="fu">c</span>(<span class="cn">FALSE</span>, <span class="cn">FALSE</span>, <span class="cn">TRUE</span>, <span class="cn">FALSE</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>可见，使用 <code>|</code> <code>&amp;</code> 会生成一个结果向量，各个元素是两个变量中各个元素对应运算的结果。而 <code>||</code> <code>&amp;&amp;</code> 只是两个向量第一个元素运算的结果。</p>
+</section>
+</section>
+<section id="r-语言二进制数据文件" class="level3" data-number="1.2.4">
+<h3 data-number="1.2.4" class="anchored" data-anchor-id="r-语言二进制数据文件"><span class="header-section-number">1.2.4</span> R 语言二进制数据文件</h3>
+<p>这是一种 R 语言特有的数据文件，基本相当于以二进制的方式将数据直接存储到文件中，使用时可以直接加载到内存，节省了读取、解析数据的时间。 这种文件常用 <code>rds</code> 或 <code>rda</code> 作为扩展名。</p>
+<p>如果我想将当前的 <code>demo.table</code> 和 <code>londonhp</code> 同时保存到一个 rds 文件中，则可使用如下两种方式</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(demo.table, londonhp, <span class="at">file =</span> <span class="st">"output-01/demo1.rds"</span>)</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">save</span>(<span class="at">list =</span> <span class="fu">c</span>(<span class="st">"demo.table"</span>, <span class="st">"londonhp"</span>), <span class="at">file =</span> <span class="st">"output-01/demo2.rds"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>该函数具有如下参数</p>
+<table class="table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>参数名</th>
+<th>类型</th>
+<th>含义</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>...</code></td>
+<td>object</td>
+<td>要输出到文件中的变量。这是一个变长参数，可以接收任意个参数。</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>list</code></td>
+<td>vector(character)</td>
+<td>要输出到文件中的变量的名称</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>file</code></td>
+<td>character</td>
+<td>输出文件路径（相对路径或绝对路径）</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>需要注意的是，该函数具有变长参数，所以只要参数没有指定参数名，都被认为是这个参数的值。 因此，当需要给参数 <code>list</code> 或者 <code>file</code> 传值时，就必须指定该参数的名称，软件才能正确地把参数值传递到对应的参数中。</p>
+<p>如果要加载之前保存的变量，就可以使用 <code>load()</code> 函数</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"output-01/demo1.rds"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>这样，<code>output-01/demo2.rds</code> 文件中所保存的变量，就被加载到当前工作空间中。</p>
+<blockquote class="blockquote">
+<p>工作空间是一个非常复杂的问题，这里暂不展开讨论。需要注意的是，R 语言在运行时，会开启一个 R 控制台，又称“节点”，在 RStudio 中又称 Terminal，在 Jupyter Notebook 中又称 Kernel 。 这个节点只要不关闭，就一直保存着所有创建的变量。这些变量所在的地方，就是一个工作空间。</p>
+</blockquote>
+<p>如果想要验证数据是否被加载，此时<strong>重启 R 进程</strong>（Terminal, Kernel），然后再重新运行如下语句</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">load</span>(<span class="st">"output-01/demo2.rds"</span>)  <span class="co"># 或者 load("output-01/demo2.rds")</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(londonhp)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>数据可以被正确加载。可以看到，这样加载数据的方式，比 <code>read.csv</code> 的方式要快，因此推荐比较大的数据可以在使用 <code>read.csv</code> 读取后，保存为 <code>rds</code> 文件。</p>
+<p>R 本身还有一些软件包自带了一些数据，例如 <code>iris</code> 数据集。可以使用 <code>data()</code> 函数进行加载</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(iris)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(iris)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p>以上数据中出现的 <code>fct</code> 类型也是一种数量类型，指 factor 类型，即“因子”。这里暂不展开讨论。</p>
+</blockquote>
+</section>
+</section>
+<section id="空间数据的读写" class="level2" data-number="1.3">
+<h2 data-number="1.3" class="anchored" data-anchor-id="空间数据的读写"><span class="header-section-number">1.3</span> 空间数据的读写</h2>
+<p>空间数据读写主要指使用 ESRI Shapefile 格式存储的数据（不包含栅格数据）。 存储空间数据的文件格式有很多，除了 ESRI Shapeifle 以外，常用的还有 GeoJSON 、 Geography Markup Language 等，一些数据库也支持存储空间数据。 但仍属 ESRI Shapeifle 最为常用，几乎所有的空间数据分析软件（如 ArcGIS、GeoDa 等）都支持该文件格式。</p>
+<section id="esri-shapefile-文件空间数据的读取" class="level3" data-number="1.3.1">
+<h3 data-number="1.3.1" class="anchored" data-anchor-id="esri-shapefile-文件空间数据的读取"><span class="header-section-number">1.3.1</span> ESRI Shapefile 文件空间数据的读取</h3>
+<p>有关 ESRI Shapefile 文件格式，需要注意以下几点：</p>
+<ul>
+<li>该格式需要使用多个文件存储空间数据，一般有如下几个后缀的文件： <code>shp</code> <code>shx</code> <code>dbf</code> <code>prj</code> <code>sbn</code> <code>sbx</code> 。</li>
+<li>该格式限制列名不能超过 10 个字符，如果超出这个长度，列明会被截断</li>
+<li>ESRI Shapefile 格式可以存储空间点、线、面数据，读取的方法类似，只是在使用时会有一些不同。这些不同将在后续教程中详细指出。</li>
+</ul>
+<p>如果要读取一个 ESRI Shapefile 文件，需要使用 <code>rgdal</code> ，如果没有安装过这个包，则使用函数 <code>install.packages(rgdal)</code> 进行安装，参数是包的名字。</p>
+<section id="空间点数据" class="level4" data-number="1.3.1.1">
+<h4 data-number="1.3.1.1" class="anchored" data-anchor-id="空间点数据"><span class="header-section-number">1.3.1.1</span> 空间点数据</h4>
+<p>使用 <code>rgdal</code> 包中的 <code>readOGR()</code> 函数读取一个空间点数据</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>demo.point <span class="ot">&lt;-</span> rgdal<span class="sc">::</span><span class="fu">readOGR</span>(<span class="st">"data/LNHP03.shp"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>如果经常使用 <code>rgdal</code> 包中的函数，可以先使用 <code>library()</code> 函数将包进行加载，然后直接使用 <code>readOGR()</code> 函数读取数据。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(rgdal)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>demo.point <span class="ot">&lt;-</span> <span class="fu">readOGR</span>(<span class="st">"data/LNHP03.shp"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><code>readOGR()</code> 函数的参数其实有很多，但是如果读取 ESRI Shapefile 文件的话，一般只需要这一个参数即可。所以关于其他参数，这里就不展开讲解了。</p>
+<p>可以输出一下 <code>demo.point</code> 变量的值，来查看该数据的详情</p>
+<div class="cell" data-scrolled="true">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>demo.point</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>该数据也类似于一个表数据，但是之前多了一列 <code>coordinates</code>。 实际上，该变量的类型是 <code>SpatialPointDataFrame</code> ，类似于一种自定义的结构体（在 R 中被称作 S4-Class），一般具有以下几个“插槽”（类似于结构体中的属性）</p>
+<ul>
+<li><code>@bbox</code> 表示数据的包围盒</li>
+<li><code>@proj4string</code> 表示数据的坐标系</li>
+<li><code>@coords</code> 表示每个要素的坐标</li>
+<li><code>@data</code> 表示每个要素对应的属性值</li>
+</ul>
+<p>和结构体类似，每个插槽也有不同的数据类型。通过如下方式获取这些插槽的值</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>demo.point<span class="sc">@</span>bbox</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>demo.point<span class="sc">@</span>proj4string</span>
+<span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(demo.point<span class="sc">@</span>coords)</span>
+<span id="cb26-4"><a href="#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(demo.point<span class="sc">@</span>data)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p>这里的 <code>@</code> 也是一个 R 语言的运算符，类似于其他面向对象语言中的 <code>.</code> ，用于获取类对象的属性值。具体作用不做展开。</p>
+</blockquote>
+</section>
+<section id="矩阵" class="level4" data-number="1.3.1.2">
+<h4 data-number="1.3.1.2" class="anchored" data-anchor-id="矩阵"><span class="header-section-number">1.3.1.2</span> 矩阵</h4>
+<p>注意 <code>@bbox</code> 插槽的值，和 <code>@coords</code> 插槽的值</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>demo.point<span class="sc">@</span>bbox</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>可以看到，该插槽值的类型是 <code>matrix</code> ，这是 R 中非常重要的数据类型之一：矩阵。 矩阵是一系列数量的二维数组，一般情况下，这些数量具有相同的类型。</p>
+<p>矩阵的创建一般是通过 <code>matrix()</code> 函数进行的，该函数指明了矩阵中的数据、行数、列数等信息，以及数据是按照行优先还是列优先的方式给出的。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>demo.matrix.numeric <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="at">data =</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>), <span class="at">nrow =</span> <span class="dv">3</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">byrow =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>demo.matrix.numeric</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>该函数具有如下参数</p>
+<table class="table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 20%">
+<col style="width: 20%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>参数名</th>
+<th>类型</th>
+<th>含义</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>data</code></td>
+<td>numeric/charactor/vector</td>
+<td>矩阵的数据。如果传入的是数量，则所有元素初始化为该值。如果传入的是向量，则按照 <code>byrow</code> 指定的顺序填入矩阵各个元素中。</td>
+<td><code>NA</code></td>
+</tr>
+<tr class="even">
+<td><code>nrow</code></td>
+<td>numeric</td>
+<td>行数</td>
+<td><code>1</code></td>
+</tr>
+<tr class="odd">
+<td><code>ncol</code></td>
+<td>numeric</td>
+<td>列数</td>
+<td><code>1</code></td>
+</tr>
+<tr class="even">
+<td><code>byrow</code></td>
+<td>logical</td>
+<td>元素赋值的顺序。如果为 <code>TRUE</code> 则数据一行一行地填入；否则，数据将一列一列地填入。</td>
+<td><code>FALSE</code></td>
+</tr>
+</tbody>
+</table>
+<p>可以通过运算符 <code>[]</code> 获取矩阵中一个区域的值，使用方法是 <code>变量名[行号,列号]</code> ，这里的行号和列号可以是整数、序列、整型向量、逻辑型向量，还可以不填（表示所有），可以实是正整数也可以是负整数。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>demo.matrix.numeric[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>, ]  <span class="co"># 取 1、2 行</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>demo.matrix.numeric[, <span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>]  <span class="co"># 取 1、2 列</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a>demo.matrix.numeric[<span class="dv">1</span>, <span class="dv">2</span>]   <span class="co"># 取第 1 行第 2 个元素</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a>demo.matrix.numeric[<span class="dv">1</span>, <span class="sc">-</span><span class="dv">2</span>]  <span class="co"># 取第 1 行除第 2 个元素以外的元素</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a>demo.matrix.numeric[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) <span class="sc">&gt;</span> <span class="dv">1</span>, ]  <span class="co"># 取第 2 行之后的所有行</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>可以使用 <code>%in%</code> 运算符判断元素在不在矩阵中</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="dv">1</span><span class="sc">:</span><span class="dv">2</span> <span class="sc">%in%</span> demo.matrix.numeric</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>矩阵可以使用 <code>+</code> <code>-</code> <code>*</code> <code>/</code> 四个运算符，这时两个矩阵必须形状一样，进行元素对应运算。 矩阵乘法使用的 <code>%*%</code> 运算符，例如</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>, <span class="at">nrow =</span> <span class="dv">3</span>) <span class="sc">%*%</span> <span class="fu">matrix</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>, <span class="at">ncol =</span> <span class="dv">5</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>运算符 <code>%*%</code> 也可以用于向量和矩阵。因此上面这条语句相当于</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">3</span>) <span class="sc">%*%</span> <span class="fu">t</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">5</span>))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>这里面使用了一个函数 <code>t()</code> 表示转置，向量经过转置后，就形成了 <code>matrix</code> 类型。 这个函数可以转置很多类型的变量，包括 <code>vector</code>, <code>matrix</code>, 以及 <code>data.frame</code> 类型。</p>
+<p>矩阵也是可以有行名和列名的，虽然一般不用，但是在将矩阵转换为 <code>data.frame</code> 时会用到。可以通过如下方式设置列名和行名，但可以不必同时设置</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">rownames</span>(demo.matrix.numeric) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"r1"</span>, <span class="st">"r2"</span>, <span class="st">"r3"</span>)</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(demo.matrix.numeric) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"c1"</span>, <span class="st">"c2"</span>, <span class="st">"c3"</span>, <span class="st">"c4"</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>demo.matrix.numeric</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>矩阵同样可以使用“as族”函数进行数据类型转换。此外，还可以使用 <code>as.data.frame()</code> 函数将矩阵转换为 <code>data.frame</code> ，例如</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">as.data.frame</span>(demo.matrix.numeric)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="将表数据转换为空间数据" class="level3" data-number="1.3.2">
+<h3 data-number="1.3.2" class="anchored" data-anchor-id="将表数据转换为空间数据"><span class="header-section-number">1.3.2</span> 将表数据转换为空间数据</h3>
+<p>有些情况下，CSV 文件也被用来存储空间数据，一般是空间点数据。我们可以通过一些方法，将这种表数据转换成空间点数据。 这里需要用到函数包 <code>sp</code> 中的 <code>coordinates()</code> 和 <code>proj4string()</code> 两个函数。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sp)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>demo.csv.point <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/WHSHP.csv"</span>)</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">coordinates</span>(demo.csv.point) <span class="ot">&lt;-</span> <span class="er">~</span> lon <span class="sc">+</span> lat  <span class="co"># 设置坐标所存在的列</span></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">proj4string</span>(demo.csv.point) <span class="ot">&lt;-</span> <span class="st">"+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs"</span>  <span class="co"># 设置空间参考</span></span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(demo.csv.point)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>这里使用到了一个 <code>~</code> 多元运算符，该运算符的作用是生成一个 <code>formula</code> 类型的变量。 从名字可以看出来，这个类型的变量表示一个数学公式， <code>~</code> 两边可以有不定数量的字段名，不同函数对这一类型变量在 <code>~</code> 两边的字段名数量不同。 对于 <code>coordinates()</code> 函数，接收右边有两个字段名的变量，这两个变量分别表示 <span class="math inline">\(x\)</span> 和 <span class="math inline">\(y\)</span> 坐标。</p>
+<p><code>proj4string()</code> 函数接收一个 Proj4 格式的字符串，不同坐标系的字符串表示方法不同，可以在 <a href="https://spatialreference.org/ref/">SpatialReference</a> 网站上查到。</p>
+</section>
+<section id="将空间数据输出到文件中" class="level3" data-number="1.3.3">
+<h3 data-number="1.3.3" class="anchored" data-anchor-id="将空间数据输出到文件中"><span class="header-section-number">1.3.3</span> 将空间数据输出到文件中</h3>
+<p>既然有 <code>readOGR()</code> 函数，相应的就有 <code>writeOGR()</code> 函数，该函数可以将 <code>Spatial*DataFrame</code> 类型的变量输出到 ESRI Shapefile 格式的文件中。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">writeOGR</span>(demo.csv.point, <span class="st">"output-01/WHSHP.shp"</span>, <span class="at">layer =</span> <span class="st">"WHSHP"</span>, <span class="at">driver =</span> <span class="st">"ESRI Shapefile"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>该函数具有如下参数：</p>
+<table class="table">
+<thead>
+<tr class="header">
+<th>参数名</th>
+<th>类型</th>
+<th>含义</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>obj</code></td>
+<td><code>Spatial*DataFrame</code></td>
+<td>要输出到文件中的变量。</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>dsn</code></td>
+<td>character</td>
+<td>输出文件的路径</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>layer</code></td>
+<td>character</td>
+<td>输出图层的名称</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>driver</code></td>
+<td>character</td>
+<td>输出文件的格式，不是扩展名。</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>overwrite_layer</code></td>
+<td>logical</td>
+<td>是否覆盖图层</td>
+<td><code>FALSE</code></td>
+</tr>
+</tbody>
+</table>
+<p>上述命令在重复执行时，会报错，原因是参数 <code>overwrite_layer</code> 默认值是 <code>FALSE</code> ，导致函数默认以追加的方式写入。 如果输出文件已经存在，则需要将 <code>overwrite_layer</code> 参数指定为 <code>TRUE</code> 。</p>
+</section>
+</section>
+<section id="附注rgdal-支持的格式" class="level2" data-number="1.4">
+<h2 data-number="1.4" class="anchored" data-anchor-id="附注rgdal-支持的格式"><span class="header-section-number">1.4</span> 附注：rgdal 支持的格式</h2>
+<p><code>readOGR()</code> 和 <code>writeOGR()</code> 支持相当多的格式</p>
+<ul>
+<li>PCIDSK -raster,vector- (rw+v): PCIDSK Database File</li>
+<li>netCDF -raster,multidimensional raster,vector- (rw+s): Network Common Data Format</li>
+<li>PDS4 -raster,vector- (rw+vs): NASA Planetary Data System 4</li>
+<li>VICAR -raster,vector- (rw+v): MIPL VICAR file</li>
+<li>JP2OpenJPEG -raster,vector- (rwv): JPEG-2000 driver based on OpenJPEG library</li>
+<li>PDF -raster,vector- (rw+vs): Geospatial PDF</li>
+<li>MBTiles -raster,vector- (rw+v): MBTiles</li>
+<li>EEDA -vector- (ro): Earth Engine Data API</li>
+<li>DB2ODBC -raster,vector- (rw+): IBM DB2 Spatial Database</li>
+<li>ESRI Shapefile -vector- (rw+v): ESRI Shapefile</li>
+<li>MapInfo File -vector- (rw+v): MapInfo File</li>
+<li>UK .NTF -vector- (rov): UK .NTF</li>
+<li>OGR_SDTS -vector- (rov): SDTS</li>
+<li>S57 -vector- (rw+v): IHO S-57 (ENC)</li>
+<li>DGN -vector- (rw+v): Microstation DGN</li>
+<li>OGR_VRT -vector- (rov): VRT - Virtual Datasource</li>
+<li>REC -vector- (ro): EPIInfo .REC</li>
+<li>Memory -vector- (rw+): Memory</li>
+<li>BNA -vector- (rw+v): Atlas BNA</li>
+<li>CSV -vector- (rw+v): Comma Separated Value (.csv)</li>
+<li>NAS -vector- (rov): NAS - ALKIS</li>
+<li>GML -vector- (rw+v): Geography Markup Language (GML)</li>
+<li>GPX -vector- (rw+v): GPX</li>
+<li>KML -vector- (rw+v): Keyhole Markup Language (KML)</li>
+<li>GeoJSON -vector- (rw+v): GeoJSON</li>
+<li>GeoJSONSeq -vector- (rw+v): GeoJSON Sequence</li>
+<li>ESRIJSON -vector- (rov): ESRIJSON</li>
+<li>TopoJSON -vector- (rov): TopoJSON</li>
+<li>OGR_GMT -vector- (rw+v): GMT ASCII Vectors (.gmt)</li>
+<li>GPKG -raster,vector- (rw+vs): GeoPackage</li>
+<li>SQLite -vector- (rw+v): SQLite / Spatialite</li>
+<li>ODBC -vector- (rw+): ODBC</li>
+<li>WAsP -vector- (rw+v): WAsP .map format</li>
+<li>PGeo -vector- (ro): ESRI Personal GeoDatabase</li>
+<li>MSSQLSpatial -vector- (rw+): Microsoft SQL Server Spatial Database</li>
+<li>PostgreSQL -vector- (rw+): PostgreSQL/PostGIS</li>
+<li>OpenFileGDB -vector- (rov): ESRI FileGDB</li>
+<li>XPlane -vector- (rov): X-Plane/Flightgear aeronautical data</li>
+<li>DXF -vector- (rw+v): AutoCAD DXF</li>
+<li>CAD -raster,vector- (rovs): AutoCAD Driver</li>
+<li>FlatGeobuf -vector- (rw+v): FlatGeobuf</li>
+<li>Geoconcept -vector- (rw+v): Geoconcept</li>
+<li>GeoRSS -vector- (rw+v): GeoRSS</li>
+<li>GPSTrackMaker -vector- (rw+v): GPSTrackMaker</li>
+<li>VFK -vector- (ro): Czech Cadastral Exchange Data Format</li>
+<li>PGDUMP -vector- (w+v): PostgreSQL SQL dump</li>
+<li>OSM -vector- (rov): OpenStreetMap XML and PBF</li>
+<li>GPSBabel -vector- (rw+): GPSBabel</li>
+<li>SUA -vector- (rov): Tim Newport-Peace’s Special Use Airspace Format</li>
+<li>OpenAir -vector- (rov): OpenAir</li>
+<li>OGR_PDS -vector- (rov): Planetary Data Systems TABLE</li>
+<li>WFS -vector- (rov): OGC WFS (Web Feature Service)</li>
+<li>OAPIF -vector- (ro): OGC API - Features</li>
+<li>HTF -vector- (rov): Hydrographic Transfer Vector</li>
+<li>AeronavFAA -vector- (rov): Aeronav FAA</li>
+<li>Geomedia -vector- (ro): Geomedia .mdb</li>
+<li>EDIGEO -vector- (rov): French EDIGEO exchange format</li>
+<li>SVG -vector- (rov): Scalable Vector Graphics</li>
+<li>CouchDB -vector- (rw+): CouchDB / GeoCouch</li>
+<li>Cloudant -vector- (rw+): Cloudant / CouchDB</li>
+<li>Idrisi -vector- (rov): Idrisi Vector (.vct)</li>
+<li>ARCGEN -vector- (rov): Arc/Info Generate</li>
+<li>SEGUKOOA -vector- (rov): SEG-P1 / UKOOA P1/90</li>
+<li>SEGY -vector- (rov): SEG-Y</li>
+<li>XLS -vector- (ro): MS Excel format</li>
+<li>ODS -vector- (rw+v): Open Document/ LibreOffice / OpenOffice Spreadsheet</li>
+<li>XLSX -vector- (rw+v): MS Office Open XML spreadsheet</li>
+<li>Elasticsearch -vector- (rw+): Elastic Search</li>
+<li>Walk -vector- (ro): Walk</li>
+<li>Carto -vector- (rw+): Carto</li>
+<li>AmigoCloud -vector- (rw+): AmigoCloud</li>
+<li>SXF -vector- (rov): Storage and eXchange Format</li>
+<li>Selafin -vector- (rw+v): Selafin</li>
+<li>JML -vector- (rw+v): OpenJUMP JML</li>
+<li>PLSCENES -raster,vector- (ro): Planet Labs Scenes API</li>
+<li>CSW -vector- (ro): OGC CSW (Catalog Service for the Web)</li>
+<li>VDV -vector- (rw+v): VDV-451/VDV-452/INTREST Data Format</li>
+<li>GMLAS -vector- (rwv): Geography Markup Language (GML) driven by application schemas</li>
+<li>MVT -vector- (rw+v): Mapbox Vector Tiles</li>
+<li>NGW -raster,vector- (rw+s): NextGIS Web</li>
+<li>MapML -vector- (rw+v): MapML</li>
+<li>TIGER -vector- (rw+v): U.S. Census TIGER/Line</li>
+<li>AVCBin -vector- (rov): Arc/Info Binary Coverage</li>
+<li>AVCE00 -vector- (rov): Arc/Info E00 (ASCII) Coverage</li>
+<li>HTTP -raster,vector- (ro): HTTP Fetching Wrapper</li>
+</ul>
+<p>因此，有时 ESRI Shapefile 并不一定是最好的选择，尤其考虑到其字段名不能超过 10 个字符的限制。</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "已复制");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "已复制");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./index.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">前言</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./02-数据预处理.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">数据预处理</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

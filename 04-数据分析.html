@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-Hans" xml:lang="zh-Hans"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.361">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>R语言空间数据分析入门教程 - 4&nbsp; 数据分析</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./03-数据可视化.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "没有结果",
+    "search-matching-documents-text": "匹配的文档",
+    "search-copy-link-title": "复制搜索链接",
+    "search-hide-matches-text": "隐藏其它匹配结果",
+    "search-more-match-text": "更多匹配结果",
+    "search-more-matches-text": "更多匹配结果",
+    "search-clear-button-title": "清除",
+    "search-detached-cancel-button-title": "取消",
+    "search-submit-button-title": "提交",
+    "search-label": "搜索"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="切换侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./04-数据分析.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">数据分析</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="切换侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R语言空间数据分析入门教程</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="搜索"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">前言</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-数据读写.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">数据读写</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-数据预处理.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">数据预处理</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-数据可视化.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">数据可视化</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-数据分析.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">数据分析</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">目录</h2>
+   
+  <ul>
+  <li><a href="#相关分析" id="toc-相关分析" class="nav-link active" data-scroll-target="#相关分析"><span class="header-section-number">4.1</span> 相关分析</a></li>
+  <li><a href="#空间相关分析" id="toc-空间相关分析" class="nav-link" data-scroll-target="#空间相关分析"><span class="header-section-number">4.2</span> 空间相关分析</a>
+  <ul class="collapse">
+  <li><a href="#全局空间自相关" id="toc-全局空间自相关" class="nav-link" data-scroll-target="#全局空间自相关"><span class="header-section-number">4.2.1</span> 全局空间自相关</a></li>
+  <li><a href="#局部空间自相关" id="toc-局部空间自相关" class="nav-link" data-scroll-target="#局部空间自相关"><span class="header-section-number">4.2.2</span> 局部空间自相关</a></li>
+  </ul></li>
+  <li><a href="#地理加权分析" id="toc-地理加权分析" class="nav-link" data-scroll-target="#地理加权分析"><span class="header-section-number">4.3</span> 地理加权分析</a>
+  <ul class="collapse">
+  <li><a href="#gwr" id="toc-gwr" class="nav-link" data-scroll-target="#gwr"><span class="header-section-number">4.3.1</span> GWR</a></li>
+  <li><a href="#gwss" id="toc-gwss" class="nav-link" data-scroll-target="#gwss"><span class="header-section-number">4.3.2</span> GWSS</a></li>
+  <li><a href="#gwpca" id="toc-gwpca" class="nav-link" data-scroll-target="#gwpca"><span class="header-section-number">4.3.3</span> GWPCA</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">数据分析</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>本节主要介绍空间数据分析的方法，分为非空间数据分析和空间数据分析两部分。</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>londonhp <span class="ot">&lt;-</span> rgdal<span class="sc">::</span><span class="fu">readOGR</span>(<span class="st">"data/LNHP03.shp"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning message in OGRSpatialRef(dsn, layer, morphFromESRI = morphFromESRI, dumpSRS = dumpSRS, :
+“Discarded datum OSGB_1936 in CRS definition: +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +units=m +no_defs”</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>OGR data source with driver: ESRI Shapefile 
+Source: "/home/hpdell/RTraining/data/LNHP03.shp", layer: "LNHP03"
+with 2108 features
+It has 17 fields</code></pre>
+</div>
+</div>
+<p>数据集 <code>londonborough</code> 数据包含了该地区的行政边界，使用之前需要先矫正一下坐标系。</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sp)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(LondonBorough, <span class="at">package =</span> <span class="st">"GWmodel"</span>)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">proj4string</span>(londonborough) <span class="ot">&lt;-</span> <span class="fu">proj4string</span>(londonhp)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning message in proj4string(londonhp):
+“CRS object has comment, which is lost in output”
+Warning message in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer_proj = prefer_proj):
+“Discarded datum Unknown based on Airy 1830 ellipsoid in CRS definition”</code></pre>
+</div>
+</div>
+<div class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="相关分析" class="level2" data-number="4.1">
+<h2 data-number="4.1" class="anchored" data-anchor-id="相关分析"><span class="header-section-number">4.1</span> 相关分析</h2>
+<p>相关分析是分析变量之间的相关性，从而为回归分析的变量选择提供依据。 进行相关分析的包有很多，这里主要介绍 <code>PerformanceAnalytics</code> 的 <code>chart.Correlation()</code> 函数。该函数的特点是提供的信息比较多，有散点图、直方图、相关系数值等，而且相关系数值的字体大小会随着相关系数的大小而变化。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>PerformanceAnalytics<span class="sc">::</span><span class="fu">chart.Correlation</span>(londonhp<span class="sc">@</span>data[, <span class="fu">c</span>(<span class="st">"PURCHASE"</span>, <span class="st">"BATH2"</span>, <span class="st">"FLOORSZ"</span>, <span class="st">"PROF"</span>, <span class="st">"UNEMPLOY"</span>)], <span class="at">histogram =</span> T)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>由此我们可以看到，<code>PURCHASE</code> 变量和 <code>BATH2</code> <code>FLOORSZ</code> <code>PROF</code> 三个变量相关性比较强。</p>
+<p>该函数默认使用皮尔逊相关系数，如果像计算斯皮尔曼相关系数，则使用 <code>method</code> 参数进行指定。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>PerformanceAnalytics<span class="sc">::</span><span class="fu">chart.Correlation</span>(londonhp<span class="sc">@</span>data[, <span class="fu">c</span>(<span class="st">"PURCHASE"</span>, <span class="st">"BATH2"</span>, <span class="st">"FLOORSZ"</span>, <span class="st">"PROF"</span>, <span class="st">"UNEMPLOY"</span>)], <span class="at">histogram =</span> T, <span class="at">method =</span> <span class="st">"spearman"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="空间相关分析" class="level2" data-number="4.2">
+<h2 data-number="4.2" class="anchored" data-anchor-id="空间相关分析"><span class="header-section-number">4.2</span> 空间相关分析</h2>
+<p>空间相关分析，主要根据全局莫兰指数和局部莫兰指数进行分析。主要用到的函数包为 <code>spdep</code> 包。</p>
+<div class="cell" data-scrolled="true">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spdep)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="全局空间自相关" class="level3" data-number="4.2.1">
+<h3 data-number="4.2.1" class="anchored" data-anchor-id="全局空间自相关"><span class="header-section-number">4.2.1</span> 全局空间自相关</h3>
+<p>莫兰指数的定义如下：<span class="math display">\[ I = \frac{n}{\sum_i \sum_j w_{ij}} \frac{ \sum_i \sum_j w_{ij} (z_i - \bar{z})(z_j - \bar{z}) }{ \sum_i (z_i - \bar{z})^2 } \]</span> 其中 <span class="math inline">\(w\)</span> 为根据空间邻域计算的权重矩阵。</p>
+<p>在 R 中，该值的计算方法是</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>londonhp.nb <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(londonhp, <span class="at">k =</span> <span class="dv">4</span>, <span class="at">longlat =</span> F))</span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>londonhp.nb.s <span class="ot">&lt;-</span> <span class="fu">make.sym.nb</span>(londonhp.nb)</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">moran.test</span>(londonhp<span class="sc">$</span>PURCHASE, <span class="at">listw =</span> <span class="fu">nb2listw</span>(londonhp.nb.s))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p>中间涉及到 <code>knn2nb</code> <code>knearneigh</code> <code>make.sym.nb</code> <code>nb2listw</code> 几个函数，都是用来生成空间邻域权重矩阵的，具体含义和使用方法请查看帮助文档。</p>
+</blockquote>
+<p>在结果中可以看到，莫兰指数 <span class="math inline">\(I\)</span> 的 <span class="math inline">\(p\)</span> 值很小，表示数据中含有自相关性；否则即使 <span class="math inline">\(I\)</span> 不是 0，也不能认为有相关性。 然后根据莫兰指数 <span class="math inline">\(I\)</span> 的值，判断相关性的类型：</p>
+<ul>
+<li><span class="math inline">\(I &gt; 0\)</span> 表示正相关</li>
+<li><span class="math inline">\(I &lt; 0\)</span> 表示负相关</li>
+</ul>
+<p>除了莫兰指数以外，还有 Geary 系数也比较常用，该系数的用法请参考《R 语言空间统计与分析实践教程》。</p>
+</section>
+<section id="局部空间自相关" class="level3" data-number="4.2.2">
+<h3 data-number="4.2.2" class="anchored" data-anchor-id="局部空间自相关"><span class="header-section-number">4.2.2</span> 局部空间自相关</h3>
+<p>局部空间自相关使用局部莫兰指数，其定义如下 <span class="math display">\[ I_i = \frac{n}{\sum_j w_{ij}} \frac{ \sum_j w_{ij} (z_i - \bar{z})(z_j - \bar{z}) }{ \sum_k (z_k - \bar{z})^2 } \]</span> 其中 <span class="math inline">\(w\)</span> 为根据空间邻域计算的权重矩阵。</p>
+<p>在 R 中使用 <code>localmoran()</code> 函数进行计算，</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>londonhp.localmoran.PURCHASE <span class="ot">&lt;-</span> <span class="fu">localmoran</span>(londonhp<span class="sc">$</span>PURCHASE, <span class="at">listw =</span> <span class="fu">nb2listw</span>(londonhp.nb.s, <span class="at">style =</span> <span class="st">"W"</span>))</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(londonhp.localmoran.PURCHASE)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>下面我们可以将其在地图上进行可视化，来观察变量的局部相关性分布情况。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>londonhp.localmoran.PURCHASE.sdf <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(londonhp<span class="sc">@</span>coords, londonhp.localmoran.PURCHASE)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coordinates</span>(londonhp.localmoran.PURCHASE.sdf) <span class="ot">&lt;-</span> <span class="er">~</span> coords.x1 <span class="sc">+</span> coords.x2</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">proj4string</span>(londonhp.localmoran.PURCHASE.sdf) <span class="ot">&lt;-</span> <span class="fu">proj4string</span>(londonhp)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(londonborough) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(londonhp.localmoran.PURCHASE.sdf) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"Ii"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>函数 <code>moran.plot</code> 用于辅助查看空间自相关特征，使用方法如下</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">moran.plot</span>(londonhp<span class="sc">$</span>PURCHASE, <span class="fu">nb2listw</span>(londonhp.nb.s, <span class="at">style =</span> <span class="st">"W"</span>), <span class="at">pch =</span> <span class="dv">19</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>根据点集落入的象限，可以分析空间自相关特征。</p>
+</section>
+</section>
+<section id="地理加权分析" class="level2" data-number="4.3">
+<h2 data-number="4.3" class="anchored" data-anchor-id="地理加权分析"><span class="header-section-number">4.3</span> 地理加权分析</h2>
+<p>地理加权分析，其方法主要由 <code>GWmodel</code> 包提供，包括地理加权汇总统计分析（GWSS）、地理加权回归分析（GWR）、地理加权主成分分析（GWPCA）、地理加权判别分析（GWDA）等。 不同地分析方法分别有不同的作用，需要搭配使用。</p>
+<div class="cell" data-scrolled="true" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GWmodel)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Loading required package: maptools
+
+Checking rgeos availability: TRUE
+
+Loading required package: robustbase
+
+Loading required package: Rcpp
+
+Loading required package: spatialreg
+
+Loading required package: spData
+
+To access larger datasets in this package, install the spDataLarge
+package with: `install.packages('spDataLarge',
+repos='https://nowosad.github.io/drat/', type='source')`
+
+Loading required package: Matrix
+
+Registered S3 methods overwritten by 'spatialreg':
+  method                   from 
+  residuals.stsls          spdep
+  deviance.stsls           spdep
+  coef.stsls               spdep
+  print.stsls              spdep
+  summary.stsls            spdep
+  print.summary.stsls      spdep
+  residuals.gmsar          spdep
+  deviance.gmsar           spdep
+  coef.gmsar               spdep
+  fitted.gmsar             spdep
+  print.gmsar              spdep
+  summary.gmsar            spdep
+  print.summary.gmsar      spdep
+  print.lagmess            spdep
+  summary.lagmess          spdep
+  print.summary.lagmess    spdep
+  residuals.lagmess        spdep
+  deviance.lagmess         spdep
+  coef.lagmess             spdep
+  fitted.lagmess           spdep
+  logLik.lagmess           spdep
+  fitted.SFResult          spdep
+  print.SFResult           spdep
+  fitted.ME_res            spdep
+  print.ME_res             spdep
+  print.lagImpact          spdep
+  plot.lagImpact           spdep
+  summary.lagImpact        spdep
+  HPDinterval.lagImpact    spdep
+  print.summary.lagImpact  spdep
+  print.sarlm              spdep
+  summary.sarlm            spdep
+  residuals.sarlm          spdep
+  deviance.sarlm           spdep
+  coef.sarlm               spdep
+  vcov.sarlm               spdep
+  fitted.sarlm             spdep
+  logLik.sarlm             spdep
+  anova.sarlm              spdep
+  predict.sarlm            spdep
+  print.summary.sarlm      spdep
+  print.sarlm.pred         spdep
+  as.data.frame.sarlm.pred spdep
+  residuals.spautolm       spdep
+  deviance.spautolm        spdep
+  coef.spautolm            spdep
+  fitted.spautolm          spdep
+  print.spautolm           spdep
+  summary.spautolm         spdep
+  logLik.spautolm          spdep
+  print.summary.spautolm   spdep
+  print.WXImpact           spdep
+  summary.WXImpact         spdep
+  print.summary.WXImpact   spdep
+  predict.SLX              spdep
+
+Welcome to GWmodel version 2.2-2.
+The new version of GWmodel 2.2-2 now is ready
+</code></pre>
+</div>
+</div>
+<section id="gwr" class="level3" data-number="4.3.1">
+<h3 data-number="4.3.1" class="anchored" data-anchor-id="gwr"><span class="header-section-number">4.3.1</span> GWR</h3>
+<p>地理加权回归分析是考虑空间异质性的回归方法，其回归方程是 <span class="math display">\[ y_i = \beta_{i0} + \sum_{k=1}^{K}\beta_{ik}x_{ik} + \epsilon_i \]</span> 其中 $ y_i $ 是在位置 <span class="math inline">\(i\)</span> 处的因变量； $ x_{ik} $ 是位置 <span class="math inline">\(i\)</span> 上第 <span class="math inline">\(k\)</span> 个自变量; $ K $ 自变量总数；$ _{i0} $ 是位置 <span class="math inline">\(i\)</span> 上的截距；<span class="math inline">\(\beta_{ik}\)</span> 位置 <span class="math inline">\(i\)</span> 上第 <span class="math inline">\(k\)</span> 个自变量的回归系数；$ _i $ 是位置 <span class="math inline">\(i\)</span> 上的随机误差，服从正态分布。</p>
+<p>其解算方法是加权最小二乘，即 <span class="math display">\[ \hat{\beta}_i = \left( X^T W_i X \right)^{-1} \left( X^T W_i y \right) \]</span> 其中 <span class="math inline">\(w_{ij}\)</span> 通过核函数和回归点 <span class="math inline">\(i,j\)</span> 之间的距离计算。距离一般是欧氏距离，或者路网距离、通勤时间等。核函数主要有以下几种：</p>
+<ul>
+<li>gaussian 非截断型带宽 <span class="math display">\[w_{ij} = \exp\left[-\frac{1}{2}\left( \frac{d_{ij}}{b} \right)^2 \right]\]</span></li>
+<li>bisquare 截断型带宽: <span class="math display">\[w_{ij} = \left\{ \begin{array}{ll} \left(1 - \frac{d_{ij}^2}{b^2} \right)^2, &amp; \mathrm{if} d_{ij} \leq b \\ 0, &amp; \mathrm{otherwise} \end{array}  \right.\]</span></li>
+<li>triqurbe 截断型带宽: <span class="math display">\[w_{ij} = \left\{ \begin{array}{ll} \left(1 - \frac{d_{ij}^2}{b^3} \right)^3, &amp; \mathrm{if} d_{ij} \leq b \\ 0, &amp; \mathrm{otherwise} \end{array}  \right.\]</span></li>
+</ul>
+<p>进行 GWR 分析的方法主要有三步：模型优选、带宽优选、模型拟合。前两步主要是用于选择一个最优参数，其结果是参考性的。</p>
+<section id="模型优选" class="level4" data-number="4.3.1.1">
+<h4 data-number="4.3.1.1" class="anchored" data-anchor-id="模型优选"><span class="header-section-number">4.3.1.1</span> 模型优选</h4>
+<p>使用 <code>gwr.model.selection()</code> 函数进行模型优选，该函数需要指定因变量和自变量。</p>
+<div class="cell" data-scrolled="true">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>londonhp.indep.vars <span class="ot">&lt;-</span> <span class="fu">colnames</span>(londonhp<span class="sc">@</span>data)[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>londonhp.depen.vars <span class="ot">&lt;-</span> <span class="fu">colnames</span>(londonhp<span class="sc">@</span>data)[<span class="dv">1</span>]</span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>londonhp.model.sel <span class="ot">&lt;-</span> <span class="fu">gwr.model.selection</span>(<span class="at">DeVar =</span> londonhp.depen.vars, <span class="at">InDeVars =</span> londonhp.indep.vars, <span class="at">data =</span> londonhp, </span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">bw =</span> <span class="cn">Inf</span>, <span class="at">adaptive =</span> T, <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">longlat =</span> F,</span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">parallel.method =</span> <span class="st">"omp"</span>, <span class="at">parallel.arg =</span> <span class="dv">8</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>londonhp.model.sort <span class="ot">&lt;-</span> <span class="fu">gwr.model.sort</span>(londonhp.model.sel, <span class="fu">length</span>(londonhp.indep.vars), londonhp.model.sel[[<span class="dv">2</span>]][,<span class="dv">2</span>])</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>然后根据下面三张图，可以分析究竟应该选择哪个模型</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 模型列表</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gwr.model.view</span>(<span class="at">DeVar =</span> londonhp.depen.vars, <span class="at">InDeVars =</span> londonhp.indep.vars, londonhp.model.sort[[<span class="dv">1</span>]])</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="do">## 模型 AIC 值</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>londonhp.model.ruler <span class="ot">&lt;-</span> londonhp.model.sort[[<span class="dv">2</span>]][,<span class="dv">2</span>]</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(londonhp.model.ruler, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 模型 AIC 变化</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>londonhp.model.ruler.diff <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">diff</span>(londonhp.model.ruler))</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(londonhp.model.ruler.diff, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>, <span class="dv">0</span>))</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="sc">-</span><span class="dv">3</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(londonhp.model.ruler.diff), <span class="at">y =</span> londonhp.model.ruler.diff, <span class="at">labels =</span> <span class="fu">as.character</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(londonhp.model.ruler.diff)))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>可以看到，第 115 个模型是比较好的模型。下面有两种方法获取该模型，一种是根据第一张图查找 115 号模型的自变量。 另一种方法是，直接根据输出结果获取表达式。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>londonhp.model.best <span class="ot">&lt;-</span> londonhp.model.sort[[<span class="dv">1</span>]][[<span class="dv">115</span>]]</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>londonhp.model.formula <span class="ot">&lt;-</span> <span class="fu">formula</span>(londonhp.model.best[[<span class="dv">1</span>]])</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>londonhp.model.indep <span class="ot">&lt;-</span> londonhp.model.best[[<span class="dv">2</span>]]</span>
+<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>londonhp.model.formula</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="带宽优选" class="level4" data-number="4.3.1.2">
+<h4 data-number="4.3.1.2" class="anchored" data-anchor-id="带宽优选"><span class="header-section-number">4.3.1.2</span> 带宽优选</h4>
+<p>在选好了模型的基础上，使用 <code>bw.gwr()</code> 函数进行带宽优选。</p>
+<div class="cell" data-scrolled="true">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>londonhp.bw <span class="ot">&lt;-</span> <span class="fu">bw.gwr</span>(londonhp.model.formula, londonhp,</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">adaptive =</span> T, <span class="at">longlat =</span> F,</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">parallel.method =</span> <span class="st">"omp"</span>, <span class="at">parallel.arg =</span> <span class="dv">8</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>返回的 <code>londonhp.bw</code> 即是最优带宽值。</p>
+</section>
+<section id="模型解算" class="level4" data-number="4.3.1.3">
+<h4 data-number="4.3.1.3" class="anchored" data-anchor-id="模型解算"><span class="header-section-number">4.3.1.3</span> 模型解算</h4>
+<p>在选好模型和带宽的基础上，使用 <code>gwr.basic()</code> 函数解算模型。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>londonhp.model.gwr <span class="ot">&lt;-</span> <span class="fu">gwr.basic</span>(londonhp.model.formula, londonhp,</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                                <span class="at">bw =</span> londonhp.bw, <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">adaptive =</span> T, <span class="at">longlat =</span> F,</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">parallel.method =</span> <span class="st">"omp"</span>, <span class="at">parallel.arg =</span> <span class="dv">8</span>)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>londonhp.model.gwr</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>返回结果 <code>londonhp.model.gwr</code> 是一个列表，最重要的是以下两个键值对：</p>
+<ul>
+<li><code>SDF</code> 是一个 Spatial*DatFrame, 和原始数据的类型一致，包含每个点上的回归系数和截距，以及一些其他信息。</li>
+<li><code>diagnostic</code> 诊断信息，包含 AIC, <span class="math inline">\(R^2\)</span> 值等，在上述结果输出中也可以看到。</li>
+</ul>
+<p>我们可以先将 <code>SDF</code> 的值的列名进行输出</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(londonhp.model.gwr<span class="sc">$</span>SDF<span class="sc">@</span>data)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>可见，该变量包含以下列：</p>
+<ul>
+<li>前 <span class="math inline">\(k\)</span> 列（<span class="math inline">\(k\)</span> 是自变量数+1）是每个要素的回归系数</li>
+<li>后面跟着真值 <span class="math inline">\(y\)</span>，估计值 <span class="math inline">\(\hat{y}\)</span>，残差值 <span class="math inline">\(\epsilon\)</span>， CV 值和学生残差值</li>
+<li>后面跟着 <span class="math inline">\(k\)</span> 个回归系数（包括截距）的标准差</li>
+<li>后面跟着 <span class="math inline">\(k\)</span> 个回归系数（包括截距）的 t 检验值</li>
+<li>最后一列是局部 <span class="math inline">\(R^2\)</span> 值</li>
+</ul>
+<p>我们可以对这些系数进行可视化输出</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(londonhp.model.gwr<span class="sc">$</span>SDF) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"Intercept"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>下面我们使用数据集 <code>LondonBorough</code> 制作完整的专题图。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(londonborough) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(londonhp.model.gwr<span class="sc">$</span>SDF) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"Intercept"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="gwss" class="level3" data-number="4.3.2">
+<h3 data-number="4.3.2" class="anchored" data-anchor-id="gwss"><span class="header-section-number">4.3.2</span> GWSS</h3>
+<p>GWSS 包含以下几类地理加权汇总统计量：</p>
+<ul>
+<li>局部平均数 <span class="math display">\[ \bar{x}(u_i,v_i) = \frac{\sum_j x_j w_{ij}}{\sum_j w_{ij}} \]</span></li>
+<li>局部标准差 <span class="math display">\[ SD(u_i,v_i) = \frac{\sqrt{\sum_j (x_j - \bar{x}(u,v))^2 w_{ij}}}{\sum_j w_{ij}} \]</span></li>
+<li>局部方差 <span class="math display">\[ Var(u_i,v_i) = \frac{{\sum_j (x_j - \bar{x}(u,v))^2 w_{ij}}}{\sum_j w_{ij}} \]</span></li>
+<li>局部偏度</li>
+<li>局部变异系数</li>
+<li>局部协方差 <span class="math display">\[ Cov_{x,y}(u_i,v_i) = \frac{{\sum_j  w_{ij} (x_j - \bar{x}_i(u_i,v_i)) (y_j - \bar{y}_i)(u_i,v_i)}}{\sum_j w_{ij}} \]</span></li>
+<li>局部皮尔逊相关系数 <span class="math display">\[ Corr_{x,y}(u_i,v_i) = \frac{ Cov_{x,y}(u_i,v_i) }{ SD_x(u_i,v_i) \times SD_y(u_i,v_i) } \]</span></li>
+<li>局部斯皮尔曼相关系数</li>
+</ul>
+<p>函数 <code>gwss()</code> 提供该功能。GWSS 的使用没有像 GWR 那么复杂，只是计算几个统计量。使用方法如下</p>
+<div class="cell" data-scrolled="true">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>londonhp.gwss <span class="ot">&lt;-</span> <span class="fu">gwss</span>(londonhp, <span class="at">vars =</span> <span class="fu">c</span>(<span class="st">"PURCHASE"</span>, <span class="st">"FLOORSZ"</span>, <span class="st">"PROF"</span>, <span class="st">"UNEMPLOY"</span>), </span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">adaptive =</span> <span class="cn">TRUE</span>, <span class="at">bw =</span> <span class="dv">100</span>, <span class="at">longlat =</span> F)</span>
+<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>londonhp.gwss</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>同样，变量 <code>londonhp.gwss</code> 是一个列表，其中有一个 <code>SDF</code> 的键值对，包含了每个要素上 GWSS 统计量的计算结果。</p>
+<div class="cell" data-scrolled="true">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(londonhp.gwss<span class="sc">$</span>SDF<span class="sc">@</span>data)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>我们也可以将其进行可视化</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(londonborough) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(londonhp.gwss<span class="sc">$</span>SDF) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE_LM"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(londonborough) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(londonhp.gwss<span class="sc">$</span>SDF) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"Corr_PURCHASE.PROF"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="gwpca" class="level3" data-number="4.3.3">
+<h3 data-number="4.3.3" class="anchored" data-anchor-id="gwpca"><span class="header-section-number">4.3.3</span> GWPCA</h3>
+<p>GWPCA 是一种局部加权的 PCA 算法，用于分析局部尺度下主成分的不同。</p>
+<p>在进行主成分分析之前，我们需要对数据进行归一化处理，处理的方法是 <span class="math display">\[ \tilde{x}_i = \frac{x_i - \bar{x}}{\mathrm{Var}(x)} \]</span> 在 R 中，使用 <code>scale</code> 函数即可</p>
+<div class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>londonhp.scaled <span class="ot">&lt;-</span> londonhp</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>londonhp.scaled<span class="sc">@</span>data <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">scale</span>(<span class="fu">as.matrix</span>(londonhp<span class="sc">@</span>data[,<span class="fu">c</span>(<span class="st">"FLOORSZ"</span>, <span class="st">"PROF"</span>, <span class="st">"UNEMPLOY"</span>)])))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>使用 <code>gwpca()</code> 函数进行 GWPCA 解算。</p>
+<div class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>londonhp.gwpca <span class="ot">&lt;-</span> <span class="fu">gwpca</span>(londonhp.scaled, <span class="at">vars =</span> <span class="fu">c</span>(<span class="st">"FLOORSZ"</span>, <span class="st">"PROF"</span>, <span class="st">"UNEMPLOY"</span>), <span class="at">k =</span> <span class="dv">2</span>,</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">adaptive =</span> <span class="cn">TRUE</span>, <span class="at">bw =</span> <span class="dv">100</span>, <span class="at">longlat =</span> F)</span>
+<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>londonhp.gwpca</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning message in proj4string(data):
+“CRS object has comment, which is lost in output”
+Warning message in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer_proj = prefer_proj):
+“Discarded datum Unknown based on Airy 1830 ellipsoid in CRS definition”</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<pre><code>   ***********************************************************************
+   *                       Package   GWmodel                             *
+   ***********************************************************************
+   Program starts at: 2021-01-14 10:58:44 
+   Call:
+   
+   Variables concerned:  FLOORSZ PROF UNEMPLOY
+   The number of retained components:  2
+   Number of data points: 2108
+   ***********************************************************************
+   *                Results of Principal Components Analysis               *
+   ***********************************************************************
+Importance of components:
+                          Comp.1    Comp.2    Comp.3
+Standard deviation     1.2425881 0.9934353 0.6848803
+Proportion of Variance 0.5146751 0.3289713 0.1563537
+Cumulative Proportion  0.5146751 0.8436463 1.0000000
+
+Loadings:
+         Comp.1 Comp.2 Comp.3
+FLOORSZ   0.184  0.977  0.105
+PROF      0.688 -0.205  0.696
+UNEMPLOY -0.702  0.055  0.710
+
+   ***********************************************************************
+   *   Results of Geographically Weighted Principal Components Analysis  *
+   ***********************************************************************
+
+   *********************Model calibration information*********************
+   Kernel function for geographically weighting: gaussian 
+   Adaptive bandwidth for geographically and temporally  weighting: 100 (number of nearest neighbours)
+   Distance metric for geographically weighting: A distance matrix is specified for this model calibration.
+
+   ****************     Summary of GWPCA information:    *****************
+   Local variance: 
+             Min. 1st Qu.  Median 3rd Qu.   Max.
+   Comp.1 0.44818 0.73382 0.91733 1.11706 2.2363
+   Comp.2 0.30006 0.49736 0.59489 0.72957 1.1960
+   Local Proportion of Variance: 
+                Min. 1st Qu. Median 3rd Qu.   Max.
+   Comp.1     43.185  51.370 54.606  57.378 64.453
+   Comp.2     27.245  33.347 35.127  37.705 44.821
+   Cumulative 85.087  88.288 89.655  91.399 95.067
+
+   ***********************************************************************
+   Program stops at: 2021-01-14 10:58:57 </code></pre>
+</div>
+</div>
+<p>返回值 <code>londonhp.gwpca</code> 也是一个列表，主要有以下几个键值对：</p>
+<ul>
+<li><code>SDF</code> : 存储各个要素上的 GWPCA 分析的结果，包含前 k 个主成分的值 <code>Comp.1_PV</code> <code>Comp.2_PV</code> … <code>Comp.$k$_PV</code>，累积占比 <code>local_CP</code>，以及优胜变量 <code>win_var_PC1</code> 。</li>
+<li><code>loadings</code> : 各个要素上的载荷矩阵</li>
+<li><code>gwpca.scores</code> : 各个要素上的得分值（只有设置了 <code>score</code> 参数才有值）</li>
+<li><code>local.PV</code> : 各个要素上的特征值</li>
+</ul>
+<p>我们可以将优胜变量进行可视化</p>
+<div class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(londonborough) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(londonhp.gwpca<span class="sc">$</span>SDF) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"win_var_PC1"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning message in sp::proj4string(obj):
+“CRS object has comment, which is lost in output”</code></pre>
+</div>
+<div class="cell-output cell-output-display">
+<p><img src="04-数据分析_files/figure-html/cell-26-output-2.png" class="img-fluid"></p>
+</div>
+</div>
+<p>也可以对载荷矩阵进行可视化，以分析其空间异质性。 该可视化方法在 <code>tmap</code> 包中没有，因此需要使用 <code>GWmodel</code> 包中的一个函数绘制，而此时就不能使用 <code>tmap</code> 来显示底图，需要使用 <code>plot()</code> 函数来显示底图。</p>
+<div class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>londonhp.loadings <span class="ot">&lt;-</span> londonhp.gwpca<span class="sc">$</span>loadings[,,<span class="dv">1</span>]</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(londonborough, <span class="at">asp =</span> <span class="dv">1</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>, <span class="at">yaxt =</span> <span class="st">"n"</span>, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">col =</span> <span class="st">"white"</span>)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glyph.plot</span>(londonhp.loadings, londonhp.gwpca<span class="sc">$</span>SDF<span class="sc">@</span>coords, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="04-数据分析_files/figure-html/cell-27-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<div class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(bss.background, <span class="at">asp =</span> <span class="dv">1</span>, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>, <span class="at">yaxt =</span> <span class="st">"n"</span>, </span>
+<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>   <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">col =</span> <span class="st">"grey"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="04-数据分析_files/figure-html/cell-28-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "已复制");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "已复制");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./03-数据可视化.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">数据可视化</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>

@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="zh-Hans" xml:lang="zh-Hans"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.3.361">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>R语言空间数据分析入门教程 - 3&nbsp; 数据可视化</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./04-数据分析.html" rel="next">
+<link href="./02-数据预处理.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 20,
+  "language": {
+    "search-no-results-text": "没有结果",
+    "search-matching-documents-text": "匹配的文档",
+    "search-copy-link-title": "复制搜索链接",
+    "search-hide-matches-text": "隐藏其它匹配结果",
+    "search-more-match-text": "更多匹配结果",
+    "search-more-matches-text": "更多匹配结果",
+    "search-clear-button-title": "清除",
+    "search-detached-cancel-button-title": "取消",
+    "search-submit-button-title": "提交",
+    "search-label": "搜索"
+  }
+}</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="切换侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03-数据可视化.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">数据可视化</span></a></li></ol></nav>
+      <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="切换侧边栏导航" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+      </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">R语言空间数据分析入门教程</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="搜索"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">前言</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01-数据读写.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">数据读写</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02-数据预处理.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">数据预处理</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03-数据可视化.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">数据可视化</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04-数据分析.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">数据分析</span></span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">目录</h2>
+   
+  <ul>
+  <li><a href="#基本的可视化函数" id="toc-基本的可视化函数" class="nav-link active" data-scroll-target="#基本的可视化函数"><span class="header-section-number">3.1</span> 基本的可视化函数</a>
+  <ul class="collapse">
+  <li><a href="#绘图元素" id="toc-绘图元素" class="nav-link" data-scroll-target="#绘图元素"><span class="header-section-number">3.1.1</span> 绘图元素</a></li>
+  <li><a href="#颜色和形状" id="toc-颜色和形状" class="nav-link" data-scroll-target="#颜色和形状"><span class="header-section-number">3.1.2</span> 颜色和形状</a></li>
+  </ul></li>
+  <li><a href="#基础数据的可视化" id="toc-基础数据的可视化" class="nav-link" data-scroll-target="#基础数据的可视化"><span class="header-section-number">3.2</span> 基础数据的可视化</a>
+  <ul class="collapse">
+  <li><a href="#散点图" id="toc-散点图" class="nav-link" data-scroll-target="#散点图"><span class="header-section-number">3.2.1</span> 散点图</a></li>
+  <li><a href="#折线图" id="toc-折线图" class="nav-link" data-scroll-target="#折线图"><span class="header-section-number">3.2.2</span> 折线图</a></li>
+  <li><a href="#柱状图" id="toc-柱状图" class="nav-link" data-scroll-target="#柱状图"><span class="header-section-number">3.2.3</span> 柱状图</a></li>
+  <li><a href="#箱线图" id="toc-箱线图" class="nav-link" data-scroll-target="#箱线图"><span class="header-section-number">3.2.4</span> 箱线图</a></li>
+  <li><a href="#直方图" id="toc-直方图" class="nav-link" data-scroll-target="#直方图"><span class="header-section-number">3.2.5</span> 直方图</a></li>
+  </ul></li>
+  <li><a href="#空间数据可视化" id="toc-空间数据可视化" class="nav-link" data-scroll-target="#空间数据可视化"><span class="header-section-number">3.3</span> 空间数据可视化</a>
+  <ul class="collapse">
+  <li><a href="#绘制符号" id="toc-绘制符号" class="nav-link" data-scroll-target="#绘制符号"><span class="header-section-number">3.3.1</span> 绘制符号</a></li>
+  <li><a href="#指北针和比例尺" id="toc-指北针和比例尺" class="nav-link" data-scroll-target="#指北针和比例尺"><span class="header-section-number">3.3.2</span> 指北针和比例尺</a></li>
+  <li><a href="#图名和图例" id="toc-图名和图例" class="nav-link" data-scroll-target="#图名和图例"><span class="header-section-number">3.3.3</span> 图名和图例</a></li>
+  </ul></li>
+  <li><a href="#制图结果的输出" id="toc-制图结果的输出" class="nav-link" data-scroll-target="#制图结果的输出"><span class="header-section-number">3.4</span> 制图结果的输出</a>
+  <ul class="collapse">
+  <li><a href="#位图输出" id="toc-位图输出" class="nav-link" data-scroll-target="#位图输出"><span class="header-section-number">3.4.1</span> 位图输出</a></li>
+  <li><a href="#矢量图输出" id="toc-矢量图输出" class="nav-link" data-scroll-target="#矢量图输出"><span class="header-section-number">3.4.2</span> 矢量图输出</a></li>
+  </ul></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">数据可视化</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<p>本节主要讲解最基本的可视化函数，进而讲解简便的表数据的可视化，以及空间数据的可视化。主要涉及到包 <code>ggplot2</code> 和 <code>tmap</code> 。</p>
+<p>一般情况下，对数据进行可视化所绘制出来的图，都是矢量图，即记录了图上每一个元素在什么位置、有什么形状的、显示什么颜色等。 尽管这些图可以输出成位图格式的图片文件，但是在 R 语言中这些都是按照矢量图进行处理的。</p>
+<p>本节主要使用这个数据进行展示。</p>
+<div class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>demo.table <span class="ot">&lt;-</span> <span class="fu">read.csv</span>(<span class="st">"data/LNHP03.csv"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>demo.table[,<span class="fu">c</span>(<span class="st">"X"</span>, <span class="st">"Y"</span>)] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(demo.table[,<span class="fu">c</span>(<span class="st">"X"</span>, <span class="st">"Y"</span>)], as.numeric)</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>demo.table[,<span class="fu">c</span>(<span class="st">"PURCHASE"</span>, <span class="st">"FLOORSZ"</span>)] <span class="ot">&lt;-</span> <span class="fu">lapply</span>(demo.table[,<span class="fu">c</span>(<span class="st">"PURCHASE"</span>, <span class="st">"FLOORSZ"</span>)], as.integer)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="基本的可视化函数" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="基本的可视化函数"><span class="header-section-number">3.1</span> 基本的可视化函数</h2>
+<section id="绘图元素" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="绘图元素"><span class="header-section-number">3.1.1</span> 绘图元素</h3>
+<p>绘制图形，尤其是矢量图，是一个非常复杂的过程，需要有很多的配置设置。 但是有一些函数基本上包揽了这些工作，直接使用该函数，填写一些参数，就可以创建一个图表。 这些函数主要有：</p>
+<ul>
+<li><code>plot()</code> 绘制散点图、折线图</li>
+<li><code>hist()</code> 绘制直方图</li>
+<li>…</li>
+</ul>
+<p>最具代表性的就是用于绘制散点图的 <code>plot()</code> 函数。例如将 <code>PURCHASE</code> 和 <code>FLOORSZ</code> 的值绘制成散点图，可使用如下代码</p>
+<div class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(demo.table<span class="sc">$</span>FLOORSZ, demo.table<span class="sc">$</span>PURCHASE, <span class="at">main =</span> <span class="st">"PURCHASE ~ FLOORSZ"</span>, <span class="at">xlab =</span> <span class="st">"FLOORSZ"</span>, <span class="at">ylab =</span> <span class="st">"PURCHASE"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display">
+<p><img src="03-数据可视化_files/figure-html/cell-3-output-1.png" class="img-fluid"></p>
+</div>
+</div>
+<p>甚至可以只对一个向量输出散点图</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(demo.table<span class="sc">$</span>PURCHASE, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">"PURCHASE"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>该函数具有很多配置参数，</p>
+<table class="table">
+<colgroup>
+<col style="width: 14%">
+<col style="width: 10%">
+<col style="width: 68%">
+<col style="width: 6%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>参数名</th>
+<th>类型</th>
+<th>含义</th>
+<th>默认值</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>x</code> <code>y</code></td>
+<td>vector</td>
+<td>每个点的坐标</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>type</code></td>
+<td>character</td>
+<td>输出图片的类型。<code>p</code>指散点图，<code>l</code>指折线图，<code>b</code>指同时输出点和线（不重叠），<code>o</code>指重叠输出点和线，<code>h</code>指以类似于直方图的形式输出。</td>
+<td><code>"p"</code></td>
+</tr>
+<tr class="odd">
+<td><code>xlim</code> <code>ylim</code></td>
+<td>vector</td>
+<td><span class="math inline">\(x\)</span> 轴和 <span class="math inline">\(y\)</span> 轴的显示范围，分别是一个具有两个 numeric 类型元素的向量，前者作为下界，后者作为上界。</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>log</code></td>
+<td>character</td>
+<td>指定哪些轴需要做对数变换。如果取值 <code>"x"</code> 或 <code>"y"</code> 则只在这些轴上变换，如果取值 <code>"xy"</code> 或 <code>"yx"</code> 则在两个轴上都做变换。</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td><code>main</code> <code>sub</code></td>
+<td>character</td>
+<td>图片主标题和副标题。一般传入一个字符串。</td>
+<td></td>
+</tr>
+<tr class="even">
+<td><code>xlab</code> <code>ylab</code></td>
+<td></td>
+<td><span class="math inline">\(x\)</span> 轴和 <span class="math inline">\(y\)</span> 轴的标题。一般传入一个字符串。</td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>…</td>
+<td>变长参数</td>
+<td>传给更底层绘图函数的参数。</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>在该函数的基础上，可以增加一些辅助点、辅助线、文字等。分别使用 <code>points()</code> <code>abline()</code> <code>grid()</code> <code>text()</code> 等函数。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 辅助线</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(demo.table<span class="sc">$</span>PURCHASE)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="dv">600000</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 背景格网、辅助线，文字</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(demo.table<span class="sc">$</span>FLOORSZ, demo.table<span class="sc">$</span>PURCHASE, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">300</span>), <span class="at">main =</span> <span class="st">"PURCHASE ~ FLOORSZ"</span>, <span class="at">xlab =</span> <span class="st">"FLOORSZ"</span>, <span class="at">ylab =</span> <span class="st">"PURCHASE"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>(<span class="at">nx =</span> <span class="dv">20</span>, <span class="at">ny =</span> <span class="dv">20</span>)   <span class="co"># x轴和 y轴格点的数量</span></span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">1000</span>)  <span class="co"># 斜率和截距</span></span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">290</span>, <span class="dv">320</span><span class="sc">*</span><span class="dv">1000</span>, <span class="fu">expression</span>(<span class="st">"£1000"</span><span class="sc">/</span>m<span class="sc">^</span><span class="dv">2</span>))  <span class="co"># 文字的横纵坐标以及内容</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="颜色和形状" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="颜色和形状"><span class="header-section-number">3.1.2</span> 颜色和形状</h3>
+<p>以上这些函数中，绘图元素的颜色，都是通过 <code>col</code> 参数设置的。例如我们将上一个图中的辅助线改为红色</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 背景格网、辅助线，文字</span></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(demo.table<span class="sc">$</span>FLOORSZ, demo.table<span class="sc">$</span>PURCHASE, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">300</span>), <span class="at">main =</span> <span class="st">"PURCHASE ~ FLOORSZ"</span>, <span class="at">xlab =</span> <span class="st">"FLOORSZ"</span>, <span class="at">ylab =</span> <span class="st">"PURCHASE"</span>)</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>(<span class="at">nx =</span> <span class="dv">20</span>, <span class="at">ny =</span> <span class="dv">20</span>)   <span class="co"># x轴和 y轴格点的数量</span></span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">1000</span>, <span class="at">col =</span> <span class="st">"red"</span>)  <span class="co"># 斜率和截距</span></span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">290</span>, <span class="dv">320</span><span class="sc">*</span><span class="dv">1000</span>, <span class="fu">expression</span>(<span class="st">"£1000"</span><span class="sc">/</span>m<span class="sc">^</span><span class="dv">2</span>), <span class="at">col =</span> <span class="st">"red"</span>)  <span class="co"># 文字的横纵坐标以及内容</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>颜色可以通过 <code>colors()</code> 函数查看内置的颜色，或者使用 <code>rgb()</code> <code>hsv()</code> <code>hcl()</code> 函数生成颜色值。这里不做过多介绍。</p>
+<p>点的形状是通过 <code>pch</code> 参数进行控制的，R 中一共包含 25 种点的样式，传入对应样式的序号即可。大小通过 <code>cex</code> 参数配置，接收一个浮点数，类似于放大缩小的比例，取值大于1则变大，小于1则变小。</p>
+<p>线的形状是通过 <code>lty</code> 参数进行控制的，R 种一共包含 6 种线的样式，传入对应样式的序号即可。线的粗细通过 <code>lwd</code> 参数配置，接收一个浮点数，可以理解为线纵向所占的像素数。</p>
+<p>字体的控制比较复杂，这里只介绍一下 <code>family</code> 参数，相当于在 Word 种所设置的字体，下面示例种填入的 <code>"serif"</code> 指默认的衬线字体，一般情况下系统会选择 Times New Roman 。当然这里也可以指定一些其他字体，但并不是所有字体都是 R 所支持的。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 背景格网、辅助线，文字</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(demo.table<span class="sc">$</span>FLOORSZ, demo.table<span class="sc">$</span>PURCHASE, <span class="at">xlim =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">300</span>), <span class="at">main =</span> <span class="st">"PURCHASE ~ FLOORSZ"</span>, <span class="at">xlab =</span> <span class="st">"FLOORSZ"</span>, <span class="at">ylab =</span> <span class="st">"PURCHASE"</span>, <span class="at">pch =</span> <span class="dv">3</span>, <span class="at">cex =</span> <span class="fl">0.8</span>)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">grid</span>(<span class="at">nx =</span> <span class="dv">20</span>, <span class="at">ny =</span> <span class="dv">20</span>)   <span class="co"># x轴和 y轴格点的数量</span></span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">a =</span> <span class="dv">0</span>, <span class="at">b =</span> <span class="dv">1000</span>, <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">lty =</span> <span class="dv">2</span>, <span class="at">lwd =</span> <span class="dv">2</span>, )  <span class="co"># 斜率和截距</span></span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="dv">300</span>, <span class="dv">300</span><span class="sc">*</span><span class="dv">1000</span>, <span class="fu">expression</span>(<span class="st">"£1000"</span><span class="sc">/</span>m<span class="sc">^</span><span class="dv">2</span>), <span class="at">col =</span> <span class="st">"red"</span>, <span class="at">family =</span> <span class="st">"serif"</span>, <span class="at">cex =</span> <span class="fl">1.5</span>, <span class="at">adj =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">0</span>))  <span class="co"># 文字的横纵坐标以及内容</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>有关这些绘图函数的详细情况，请查看《R 语言空间数据处理于分析实践教程》。</p>
+</section>
+</section>
+<section id="基础数据的可视化" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="基础数据的可视化"><span class="header-section-number">3.2</span> 基础数据的可视化</h2>
+<p>用于数据可视化的包有很多，但是这里主要介绍使用 <code>ggplot2</code> 包进行可视化的方法。</p>
+<p>函数包 <code>ggplot2</code> 是由 Hadley Wickham 等人开发和维护的数据可视化工具函数包，是当前 R 中最流行的可视化函数包之一。 与大多数数据可视化函数包不同，函数包 ggplot2 基于 2005 年 Wilkinson 提出的图形语法开发，由一系列的独立可视化组件构成，这些组件可以被称为“图层”。 因此，ggplot2 的功能非常强大，可以根据不同的可视化问题与需求，量身定制不同的可视化图形。</p>
+<p>尽管 ggplot2 功能强大，但常用的可视化图无非是散点图、折线图、柱状图、饼图、直方图、箱线图等类型，而且理论上这些图都可以使用 plot 以及其他一些 R 自带的函数进行实现。 因此本节着重介绍这个包一些特有的功能，使用这些功能可以大大简化绘图流程。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(ggplot2)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="散点图" class="level3" data-number="3.2.1">
+<h3 data-number="3.2.1" class="anchored" data-anchor-id="散点图"><span class="header-section-number">3.2.1</span> 散点图</h3>
+<p>本节采用 iris 数据集进行演示。该数据集中包含了三种类型的鸢尾花的一些形态指标。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(iris)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(iris)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>我们使用这种方式展示字段 <code>Sepal.Length</code> 和 <code>Sepal.Width</code> 之间的关系，并给不同的鸢尾花类型使用不同的符号。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Sepal.Width, <span class="at">color =</span> Species))  <span class="co"># 根据颜色区分鸢尾花</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Sepal.Width, <span class="at">shape =</span> Species))  <span class="co"># 根据点形区分鸢尾花</span></span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>可见，<code>ggplot</code> 包首先要使用 <code>ggplot()</code> 函数创建一个绘图环境，然后在后面叠加所需要绘制的图层符号。</p>
+<p>上面所用到的 <code>aes()</code> 函数，是指定将数据映射到图层的参数， <code>x</code> <code>y</code> 表示点的坐标，此外 <code>shape</code> <code>size</code> <code>color</code> <code>group</code> 等绘图参数，分别将不同的数据映射到了不同的绘图元素上。 这个函数可以放在 <code>gemo_points()</code> 中，也可以放在 <code>ggplot()</code> 中。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Sepal.Width, <span class="at">group =</span> Species, <span class="at">color =</span> Species)) <span class="sc">+</span> <span class="fu">geom_point</span>()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>对于散点图，我们还可以添加一个回归曲线，使用 <code>geom_smooth()</code> 函数。如果 <code>aes()</code> 函数中对数据进行了分组，那么，<code>geom_smooth()</code> 就会对每个组分别进行回归。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris, <span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Sepal.Width, <span class="at">color =</span> Species)) <span class="sc">+</span> <span class="fu">geom_point</span>() <span class="sc">+</span> <span class="fu">geom_smooth</span>(<span class="at">method =</span> lm)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>我们也可以将其他两个参数加入，字段 <code>Petal.Length</code> 用大小表达，字段 <code>Petal.Width</code> 用颜色表达</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris) <span class="sc">+</span> <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Sepal.Width, <span class="at">shape =</span> Species, <span class="at">size =</span> Petal.Length, <span class="at">color =</span> Petal.Width))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>我们也可以更换一个比较学术化的主题，只需要在后面增加一个 <code>theme_bw()</code> 函数，即可进行主题设置</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris) <span class="sc">+</span> </span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length, <span class="at">y =</span> Sepal.Width, <span class="at">shape =</span> Species)) <span class="sc">+</span> </span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">theme_bw</span>()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="折线图" class="level3" data-number="3.2.2">
+<h3 data-number="3.2.2" class="anchored" data-anchor-id="折线图"><span class="header-section-number">3.2.2</span> 折线图</h3>
+<p>折线图一般用于表示一个变量随另一个变量的变化趋势，一般情况下这两个变量不会是一个类别变量，而且横轴的取值一般是连续型变量，或者是等差数列。</p>
+<p>这里使用 <code>airquality</code> 数据集，来展示对于时间序列的可视化。这个数据集中包含了纽约1973年5-9月每日空气质量。 我们需要用不同的线绘制出不同月份每天气温变化图。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(airquality)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(airquality) <span class="sc">+</span></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> Day, <span class="at">y =</span> Temp, <span class="at">color =</span> <span class="fu">as.factor</span>(Month)))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>这里使用到了一个 <code>as.factor()</code> 函数，根据这个名字，可以看到这个函数是将变量转换为 <code>factor</code> 类型的变量，这也是 R 中一个常用的数据类型——因子类型。 因子类型比较类似于实验中的控制变量，这种变量可以是整数，可以是字符串，但必须是有限个的，而且一般情况下每个因子有不同的重复实验。 这个案例中，月份就可以认为是因子。</p>
+<p>当然，折线图也不一定必须是时间序列的，例如下面这个数据集 <code>CO2</code> 描述了不同二氧化碳浓度下耐寒植物CO2摄取的差异。 我们可以分别画出不同植物在低温处理和非低温处理下吸收二氧化碳能力随二氧化碳浓度的变化图</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>CO2.edit <span class="ot">&lt;-</span> CO2</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>CO2.edit<span class="sc">$</span>Plant <span class="ot">&lt;-</span> <span class="fu">sapply</span>(CO2<span class="sc">$</span>Plant, <span class="at">FUN =</span> <span class="cf">function</span>(x) {</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">paste</span>(<span class="fu">substring</span>(x, <span class="dv">1</span>, <span class="dv">1</span>), <span class="fu">substring</span>(x, <span class="dv">3</span>, <span class="dv">3</span>), <span class="at">sep =</span> <span class="st">""</span>)</span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(CO2.edit) <span class="sc">+</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">x =</span> conc, <span class="at">y =</span> uptake, <span class="at">linetype =</span> Treatment)) <span class="sc">+</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span> Plant)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>上述代码中，使用 <code>facet_wrap()</code> 函数进行分幅绘图，接收一个 <code>formula</code> 对象，公式右边列出分组依据。还接受两个参数 <code>nrow</code> 和 <code>ncol</code> ，和创建矩阵时的用法一样。</p>
+</section>
+<section id="柱状图" class="level3" data-number="3.2.3">
+<h3 data-number="3.2.3" class="anchored" data-anchor-id="柱状图"><span class="header-section-number">3.2.3</span> 柱状图</h3>
+<p>柱状图一般用于大小的比较，横轴上一般是一个类别变量，纵轴一般是一个整型变量或连续型变量。 如果已经统计好值，则使用 <code>geom_col()</code> 函数，如果需要 <code>ggplot</code> 进行统计，则使用 <code>geom_bar()</code> 函数。</p>
+<p>例如，我们统计三种鸢尾花品种花萼和花瓣的形态数据的平均值，使用柱状图进行展示。</p>
+<p>我们首先对该数据进行一个分组统计，统计出各组内指标的平均值。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>iris.summary <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="fu">summarise</span>(<span class="fu">group_by</span>(iris, Species), <span class="at">Sepal.Length.mean =</span> <span class="fu">mean</span>(Sepal.Length), <span class="at">Sepal.Width.mean =</span> <span class="fu">mean</span>(Sepal.Width)), <span class="at">row.names =</span> <span class="st">"Species"</span>)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>iris.summary</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>其次注意到，这种形式的数据集，并不便于使用 <code>ggplot</code> 函数包进行可视化，因为数据映射中的 <code>y</code> 对应在了两列中。我们需要对其进行转换。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>iris.summary.reshape <span class="ot">&lt;-</span> <span class="fu">Reduce</span>(rbind, <span class="fu">lapply</span>(<span class="fu">rownames</span>(iris.summary), <span class="at">FUN =</span> <span class="cf">function</span> (x) {</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">data.frame</span>(</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>        <span class="at">Species =</span> x,</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>        <span class="at">Measurements =</span> <span class="fu">colnames</span>(iris.summary),</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a>        <span class="at">Data =</span> <span class="fu">as.numeric</span>(iris.summary[x,])</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>    )</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>}))</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a>iris.summary.reshape</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<blockquote class="blockquote">
+<p>这里使用到 <code>Reduce(f, x)</code> 函数，可以实现对 <span class="math inline">\(x\)</span> 的第一、二两个元素运行函数 <span class="math inline">\(f\)</span>，得到的结果与第三个元素再运行函数 <span class="math inline">\(f\)</span>，以此类推，最后将 <span class="math inline">\(x\)</span> 的所有元素整合到一起。 具体使用方法这里不做展开</p>
+</blockquote>
+<p>然后可以对 <code>iris.reshape</code> 进行可视化，使用两个柱子分别显示两组变量</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris.summary.reshape) <span class="sc">+</span></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">x =</span> Species, <span class="at">y =</span> Data, <span class="at">fill =</span> Measurements), <span class="at">position =</span> <span class="fu">position_dodge2</span>(<span class="at">padding =</span> <span class="dv">0</span>,  <span class="at">preserve =</span> <span class="st">"single"</span>))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="箱线图" class="level3" data-number="3.2.4">
+<h3 data-number="3.2.4" class="anchored" data-anchor-id="箱线图"><span class="header-section-number">3.2.4</span> 箱线图</h3>
+<p>箱线图是将一组数据按照大小顺序排列后进行绘制的，包含6个数据节点，分别表示出数据的上边缘、上四分位数点Q3（数据从小到大排列后处在75％位置上的数据）、中位数、下四分位数Q1（数据从小到大排列后处在25％位置上的数据）、下边缘和异常值。由此，箱线图很形象地分为中心、延伸以及分布状态的全部范围。</p>
+<p>例如我们分析鸢尾花数据集中各个指标的分布，仍然需要先将数据集进行格式转换。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>measurements.colnames <span class="ot">&lt;-</span> <span class="fu">colnames</span>(iris)[<span class="sc">-</span><span class="fu">c</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(iris) <span class="sc">==</span> <span class="st">"Species"</span>))]</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>iris.reshape <span class="ot">&lt;-</span> <span class="fu">Reduce</span>(rbind, (<span class="fu">lapply</span>(<span class="fu">unique</span>(iris<span class="sc">$</span>Species), <span class="at">FUN =</span> <span class="cf">function</span> (x) {</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    item <span class="ot">&lt;-</span> <span class="fu">filter</span>(iris, Species <span class="sc">==</span> x)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">Reduce</span>(rbind, <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(item), <span class="at">FUN =</span> <span class="cf">function</span> (r) {</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>        <span class="fu">data.frame</span>(</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a>            <span class="at">Species =</span> x,</span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>            <span class="at">Measurements =</span> measurements.colnames,</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a>            <span class="at">Data =</span> <span class="fu">as.numeric</span>(item[r, measurements.colnames])</span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a>        )</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a>    }))</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a>})))</span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(iris.reshape)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>然后使用 <code>gemo_boxplot()</code> 函数绘制箱线图，<span class="math inline">\(x\)</span> 轴设置为品种，<span class="math inline">\(y\)</span> 轴设置为数值，然后根据指标进行分幅。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris.reshape) <span class="sc">+</span> <span class="fu">geom_boxplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> Species, <span class="at">y =</span> Data, <span class="at">fill =</span> Species)) <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span> Measurements)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>这样可以明显看出数据分布的方式。</p>
+<p>上面这个数据处理的方式是比较通用的，可以写成如下函数，方便以后使用。这个函数主要具有如下4个参数：</p>
+<ul>
+<li><code>df</code> 要处理的表数据</li>
+<li><code>first.names</code> 数据处理的第一索引，将出现在结果的第一列中。
+<ul>
+<li>如果是字符串，则取该字符串对应的列</li>
+<li>如果是字符串向量，则将该字符串向量作为第一索引</li>
+<li>如果是逻辑值，则将行名作为第一索引</li>
+<li>如果是数值，则将数值对应的列作为第一索引</li>
+</ul></li>
+<li><code>col.names</code> 要提取数据的列。如果为 <code>NULL</code> 则取除了 <code>first.names</code> 之外的所有列。这些列名的取值将出现在第二列。</li>
+<li><code>output.names</code> 输出数据的列名。
+<ul>
+<li>如果不填，则程序自动处理列名。</li>
+<li>如果填一个，则第二列用该值，第一列用根据 <code>first.names</code> 提取的列名，第三列默认名称 <code>Value</code></li>
+<li>如果填两个，则前两列使用该值，第三列默认名称 <code>Value</code></li>
+<li>如果填三个，则三列全都使用该值</li>
+</ul></li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>df.reshape.ggplot <span class="ot">&lt;-</span> <span class="cf">function</span> (df, first.names, <span class="at">col.names=</span><span class="cn">NULL</span>, <span class="at">output.names=</span><span class="fu">c</span>()) {</span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">class</span>(df) <span class="sc">!=</span> <span class="st">"data.frame"</span>) {</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a>        <span class="fu">stop</span>(<span class="st">"df must be a data.frame"</span>)</span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a>    first.index <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>    second.index <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>    use.first.name <span class="ot">&lt;-</span> <span class="st">"primary.names"</span></span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">class</span>(first.names) <span class="sc">==</span> <span class="st">"character"</span> <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(first.names) <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;&amp;</span> first.names <span class="sc">%in%</span> <span class="fu">colnames</span>(df)) {</span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a>        first.index <span class="ot">&lt;-</span> df[[first.names]]</span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>        second.index <span class="ot">&lt;-</span> <span class="fu">colnames</span>(df)[<span class="sc">-</span><span class="fu">c</span>(<span class="fu">which</span>(<span class="fu">colnames</span>(df) <span class="sc">==</span> first.names))]</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a>        use.first.name <span class="ot">&lt;-</span> first.names</span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">length</span>(first.names) <span class="sc">==</span> <span class="fu">nrow</span>(df)) {</span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a>        first.index <span class="ot">&lt;-</span> first.names</span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>        second.index <span class="ot">&lt;-</span> <span class="fu">colnames</span>(df)</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">class</span>(first.names) <span class="sc">==</span> <span class="st">"logical"</span> <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(first.names) <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;&amp;</span> first.names <span class="sc">==</span> <span class="cn">TRUE</span>) {</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>        first.index <span class="ot">&lt;-</span> <span class="fu">rownames</span>(df)</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a>        second.index <span class="ot">&lt;-</span> <span class="fu">colnames</span>(df)</span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">class</span>(first.names) <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"numeric"</span>, <span class="st">"integer"</span>) <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(first.names) <span class="sc">==</span> <span class="dv">1</span> <span class="sc">&amp;&amp;</span> first.names <span class="sc">==</span> <span class="cn">TRUE</span>) {</span>
+<span id="cb23-19"><a href="#cb23-19" aria-hidden="true" tabindex="-1"></a>        first.names <span class="ot">&lt;-</span> <span class="fu">as.integer</span>(first.names)</span>
+<span id="cb23-20"><a href="#cb23-20" aria-hidden="true" tabindex="-1"></a>        first.index <span class="ot">&lt;-</span> df[, first.names]</span>
+<span id="cb23-21"><a href="#cb23-21" aria-hidden="true" tabindex="-1"></a>        second.index <span class="ot">&lt;-</span> <span class="fu">colnames</span>(df)[<span class="sc">-</span><span class="fu">c</span>(first.names)]</span>
+<span id="cb23-22"><a href="#cb23-22" aria-hidden="true" tabindex="-1"></a>        use.first.name <span class="ot">&lt;-</span> <span class="fu">colnames</span>(df)[first.names]</span>
+<span id="cb23-23"><a href="#cb23-23" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> {</span>
+<span id="cb23-24"><a href="#cb23-24" aria-hidden="true" tabindex="-1"></a>        <span class="fu">stop</span>(<span class="st">"first.names accept a vector or a column name/index"</span>)</span>
+<span id="cb23-25"><a href="#cb23-25" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb23-26"><a href="#cb23-26" aria-hidden="true" tabindex="-1"></a>    df.reshape <span class="ot">&lt;-</span> <span class="fu">Reduce</span>(rbind, (<span class="fu">lapply</span>(<span class="fu">unique</span>(first.index), <span class="at">FUN =</span> <span class="cf">function</span> (x) {</span>
+<span id="cb23-27"><a href="#cb23-27" aria-hidden="true" tabindex="-1"></a>        item <span class="ot">&lt;-</span> df[first.index <span class="sc">==</span> x,]</span>
+<span id="cb23-28"><a href="#cb23-28" aria-hidden="true" tabindex="-1"></a>        <span class="fu">Reduce</span>(rbind, <span class="fu">lapply</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(item), <span class="at">FUN =</span> <span class="cf">function</span> (r) {</span>
+<span id="cb23-29"><a href="#cb23-29" aria-hidden="true" tabindex="-1"></a>            <span class="fu">data.frame</span>(</span>
+<span id="cb23-30"><a href="#cb23-30" aria-hidden="true" tabindex="-1"></a>                <span class="st">"primary.names"</span> <span class="ot">=</span> x,</span>
+<span id="cb23-31"><a href="#cb23-31" aria-hidden="true" tabindex="-1"></a>                <span class="st">"secondary.names"</span> <span class="ot">=</span> <span class="fu">as.character</span>(second.index),</span>
+<span id="cb23-32"><a href="#cb23-32" aria-hidden="true" tabindex="-1"></a>                <span class="st">"value"</span> <span class="ot">=</span> <span class="fu">as.vector</span>(<span class="fu">as.matrix</span>(item[r, second.index]))</span>
+<span id="cb23-33"><a href="#cb23-33" aria-hidden="true" tabindex="-1"></a>            )</span>
+<span id="cb23-34"><a href="#cb23-34" aria-hidden="true" tabindex="-1"></a>        }))</span>
+<span id="cb23-35"><a href="#cb23-35" aria-hidden="true" tabindex="-1"></a>    })))</span>
+<span id="cb23-36"><a href="#cb23-36" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> (<span class="fu">length</span>(output.names) <span class="sc">==</span> <span class="dv">0</span>) {</span>
+<span id="cb23-37"><a href="#cb23-37" aria-hidden="true" tabindex="-1"></a>        <span class="fu">colnames</span>(df.reshape)[<span class="dv">1</span>] <span class="ot">&lt;-</span> use.first.name</span>
+<span id="cb23-38"><a href="#cb23-38" aria-hidden="true" tabindex="-1"></a>    } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">class</span>(output.names) <span class="sc">==</span> <span class="st">"character"</span>) {</span>
+<span id="cb23-39"><a href="#cb23-39" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">length</span>(output.names) <span class="sc">==</span> <span class="dv">3</span>) {</span>
+<span id="cb23-40"><a href="#cb23-40" aria-hidden="true" tabindex="-1"></a>            <span class="fu">colnames</span>(df.reshape) <span class="ot">&lt;-</span> output.names</span>
+<span id="cb23-41"><a href="#cb23-41" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">length</span>(output.names) <span class="sc">==</span> <span class="dv">2</span>) {</span>
+<span id="cb23-42"><a href="#cb23-42" aria-hidden="true" tabindex="-1"></a>            <span class="fu">colnames</span>(df.reshape)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="ot">&lt;-</span> output.names</span>
+<span id="cb23-43"><a href="#cb23-43" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> <span class="cf">if</span> (<span class="fu">length</span>(output.names) <span class="sc">==</span> <span class="dv">1</span>) {</span>
+<span id="cb23-44"><a href="#cb23-44" aria-hidden="true" tabindex="-1"></a>            <span class="fu">colnames</span>(df.reshape)[<span class="dv">1</span><span class="sc">:</span><span class="dv">2</span>] <span class="ot">&lt;-</span> <span class="fu">c</span>(use.first.name, output.names)</span>
+<span id="cb23-45"><a href="#cb23-45" aria-hidden="true" tabindex="-1"></a>        } <span class="cf">else</span> {</span>
+<span id="cb23-46"><a href="#cb23-46" aria-hidden="true" tabindex="-1"></a>            <span class="fu">warning</span>(<span class="st">"length of output.names is not between 1 and 3"</span>)</span>
+<span id="cb23-47"><a href="#cb23-47" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb23-48"><a href="#cb23-48" aria-hidden="true" tabindex="-1"></a>    }</span>
+<span id="cb23-49"><a href="#cb23-49" aria-hidden="true" tabindex="-1"></a>    df.reshape</span>
+<span id="cb23-50"><a href="#cb23-50" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="直方图" class="level3" data-number="3.2.5">
+<h3 data-number="3.2.5" class="anchored" data-anchor-id="直方图"><span class="header-section-number">3.2.5</span> 直方图</h3>
+<p>饼图主要展示各个值在不同区间内分布的频数，用于研究数据的概率分布。</p>
+<p>例如对鸢尾花数据集，我们可以分别查看三种花的 <code>Sepal.Length</code> 指标的分布情况。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">x =</span> Sepal.Length), <span class="at">binwidth =</span> <span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span> Species, <span class="at">ncol =</span> <span class="dv">1</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>如果 <code>aes()</code> 中指定的是 <code>y</code> 则直方图变为横向，</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(iris) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="fu">aes</span>(<span class="at">y =</span> Sepal.Length), <span class="at">binwidth =</span> <span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">facet_wrap</span>(<span class="sc">~</span> Species)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="空间数据可视化" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="空间数据可视化"><span class="header-section-number">3.3</span> 空间数据可视化</h2>
+<p>空间数据可视化又称专题制图，即制作一个专题地图。专题地图就需要至少有四个要素：符号、图例、指北针、比例尺。这些可以通过程序自动添加。</p>
+<p>对于空间数据，其可视化有一个难点，即在二维地图上的 <span class="math inline">\(x,y\)</span> 坐标已经被要素的空间位置所占据，只能通过颜色、大小、粗细来表示数值型变量的大小，通过形状等表示类别型变量的大小。 如果是三维地图，可以使用 <span class="math inline">\(z\)</span> 轴来展示数值型变量的大小，也可以做出一些效果不错的专题图。但是三维可视化仍然存在很多问题，这里还是主要介绍二维可视化。</p>
+<p>我们以这个数据为例进行演示。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>demo.shp <span class="ot">&lt;-</span> rgdal<span class="sc">::</span><span class="fu">readOGR</span>(<span class="st">"data/LNHP03.shp"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>当加载了 <code>sp</code> 包之后，<code>plot()</code> 函数就可以直接绘制空间数据，用法如下</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sp)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(demo.shp)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>也可以显示空间面数据</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(LondonBorough, <span class="at">package =</span> <span class="st">"GWmodel"</span>)</span>
+<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(londonborough)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>二者也可以进行叠加显示</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(londonborough)</span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(demo.shp)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>事实上， <code>ggplot</code> 包也可以做空间数据可视化，但是这里主要推荐使用 <code>tmap</code> 包，来提供更强大的可视化功能。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="绘制符号" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="绘制符号"><span class="header-section-number">3.3.1</span> 绘制符号</h3>
+<p><code>tmap</code> 包的使用思路是，使用 <code>tm_shape()</code> 添加一组要素，然后根据要素的类型，选择 <code>tm_symbol()</code> <code>tm_polygon()</code> 等函数进行可视化，</p>
+<p>将数据 <code>demo.shp</code> 使用点符号对变量 <code>PURCHASE</code> 进行可视化，给 <code>col</code> 参数传入一个列名，让函数根据该列的值进行可视化，用 <code>size</code> 参数传入点的大小。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>如果我们不想要这么多分级，那么可以使用参数 <code>n</code> 对其进行设置</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>, <span class="at">n =</span> <span class="dv">3</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>我们也可以使用参数 <code>palette</code> 换一个配色方案</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>, <span class="at">palette =</span> <span class="st">"Blues"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>也可以同时可视化多组变量，并进行分幅输出</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="fu">c</span>(<span class="st">"PURCHASE"</span>, <span class="st">"FLOORSZ"</span>, <span class="st">"UNEMPLOY"</span>, <span class="st">"PROF"</span>), <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">tm_facets</span>()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>对于面要素，使用方法也是类似的，例如我们使用 <code>World</code> 数据集，来绘制全球人口分布图</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(World)</span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(World) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="st">"life_exp"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>我们也可以在一幅图上输出多个要素，这里使用 <code>rivers</code> 数据集，该数据集包括了全球的主要河流；以及 <code>metro</code> 数据，包含了多年全球各国人口。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(rivers)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(World) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(rivers) <span class="sc">+</span> <span class="fu">tm_lines</span>(<span class="at">col =</span> <span class="st">"blue"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(metro)</span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(World) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(metro) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">size =</span> <span class="st">"pop2020"</span>, <span class="at">col =</span> <span class="st">""</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="指北针和比例尺" class="level3" data-number="3.3.2">
+<h3 data-number="3.3.2" class="anchored" data-anchor-id="指北针和比例尺"><span class="header-section-number">3.3.2</span> 指北针和比例尺</h3>
+<p>指北针和比例尺的添加也是非常方便的，使用 <code>tm_compass()</code> 函数和 <code>tm_scale_bar()</code> 函数。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">tm_compass</span>() <span class="sc">+</span> <span class="fu">tm_scale_bar</span>()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>图例是自动添加的，而指北针和比例尺的默认的位置是不太合适的。</p>
+<p>如果仅仅是调整位置，这两个函数都接收 <code>position</code> 参数，该参数接收一个二元向量，可以是字符串或 <span class="math inline">\([0,1]\)</span> 区间内的数值。 如果是字符串，第一个值取 <code>left``center``right</code> 中的一个；第二个值取 <code>top``center``bottom</code> 中的一个。 可以是全小写，也可以是全大写。如果是全大写，则忽略边距。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span> <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"top"</span>))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="图名和图例" class="level3" data-number="3.3.3">
+<h3 data-number="3.3.3" class="anchored" data-anchor-id="图名和图例"><span class="header-section-number">3.3.3</span> 图名和图例</h3>
+<p>图名和图例的添加和配置，和指北针、比例尺有些不同。图例是自动添加的，图名是需要指定的，他们都是在 <code>tm_layout()</code> 函数中进行设置的。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> </span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span> </span>
+<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"bottom"</span>)) <span class="sc">+</span></span>
+<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_layout</span>(<span class="st">"Map of Housing Price"</span>, <span class="at">main.title.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"top"</span>), <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>第一个参数就是 <code>title</code> ，即图标题，其位置使用 <code>main.position</code> 参数进行设置。对于图例的位置，使用 <code>legend.posistion</code> 参数设置。</p>
+<p>该函数还有非常多的参数，这里难以一一介绍。可以使用下面这个方式，查看所有函数的帮助文档。对于 <code>tm_layout()</code> 函数，其参数默认值都还是比较合适的，一般就调整一下位置。</p>
+</section>
+</section>
+<section id="制图结果的输出" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="制图结果的输出"><span class="header-section-number">3.4</span> 制图结果的输出</h2>
+<p>制图结果我们需要输出到文件中，以在论文或其他文档中使用。 在 R 中输出图片的方式，是先创建一个绘图设备，然后使用语句进行绘图，最后关闭该设备，即可得到文件。 在 R 控制台中，默认的绘图设备是控制台的一个新窗口，在 Jupyter 中是一个 cell 的输出空间，在 RStudio 中是专门用于显示图片的子窗。</p>
+<p>创建绘图设备有几种类型，输出栅格图的 <code>png</code> <code>jpg</code> 等，输出矢量图的 <code>eps</code> <code>pdf</code> 等。在 Windows 上，还有 <code>emf</code> 这种设备，可以直接嵌入到 Office 中。</p>
+<p>关闭绘图设备的函数是 <code>dev.off()</code>。</p>
+<section id="位图输出" class="level3" data-number="3.4.1">
+<h3 data-number="3.4.1" class="anchored" data-anchor-id="位图输出"><span class="header-section-number">3.4.1</span> 位图输出</h3>
+<p>这里以 <code>png</code> 为例展示输出位图图片的方式。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="at">filename =</span> <span class="st">"output-03/PURCHASE.png"</span>, <span class="at">width =</span> <span class="dv">1024</span>, <span class="at">height =</span> <span class="dv">1024</span>, <span class="at">units =</span> <span class="st">"px"</span>, <span class="at">res =</span> <span class="dv">300</span>, <span class="at">pointsize =</span> <span class="dv">12</span>)</span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> </span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span> </span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"bottom"</span>)) <span class="sc">+</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_layout</span>(<span class="st">"Map of Housing Price"</span>, <span class="at">main.title.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"top"</span>), <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>))</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>该函数中有以下几个参数：</p>
+<ul>
+<li><code>width</code> <code>height</code> 是设置图片宽高的，参数 <code>units</code> 是指宽高设置数值的单位。</li>
+<li><code>units</code> 可以取 <code>px</code> 表示像素，也可以取 <code>cm</code> <code>in</code> 表示长度。而不同单位的设置方法，也会影响 <code>res</code> 的效果。</li>
+<li><code>res</code> 是指 PPI（Pixel Per Inch） ，即图像的采样率（在图像中，每英寸所包含的像素数目）</li>
+<li><code>pointsize</code> 是绘图点大小，单位是 <span class="math inline">\(1/72\)</span>。</li>
+</ul>
+<p>关于这些参数的设置，我们可以对比以下几张图。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="at">filename =</span> <span class="st">"output-03/PURCHASE-2400px-300dpi-12.png"</span>, <span class="at">width =</span> <span class="dv">2400</span>, <span class="at">height =</span> <span class="dv">2400</span>, <span class="at">units =</span> <span class="st">"px"</span>, <span class="at">res =</span> <span class="dv">300</span>)</span>
+<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> </span>
+<span id="cb42-3"><a href="#cb42-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb42-4"><a href="#cb42-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span> </span>
+<span id="cb42-5"><a href="#cb42-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"bottom"</span>)) <span class="sc">+</span></span>
+<span id="cb42-6"><a href="#cb42-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_layout</span>(<span class="st">"Map of Housing Price"</span>, <span class="at">main.title.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"top"</span>), <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>))</span>
+<span id="cb42-7"><a href="#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb42-8"><a href="#cb42-8" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="at">filename =</span> <span class="st">"output-03/PURCHASE-1200px-300dpi-12.png"</span>, <span class="at">width =</span> <span class="dv">1200</span>, <span class="at">height =</span> <span class="dv">1200</span>, <span class="at">units =</span> <span class="st">"px"</span>, <span class="at">res =</span> <span class="dv">300</span>)</span>
+<span id="cb42-9"><a href="#cb42-9" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> </span>
+<span id="cb42-10"><a href="#cb42-10" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb42-11"><a href="#cb42-11" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span> </span>
+<span id="cb42-12"><a href="#cb42-12" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"bottom"</span>)) <span class="sc">+</span></span>
+<span id="cb42-13"><a href="#cb42-13" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_layout</span>(<span class="st">"Map of Housing Price"</span>, <span class="at">main.title.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"top"</span>), <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>))</span>
+<span id="cb42-14"><a href="#cb42-14" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb42-15"><a href="#cb42-15" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="at">filename =</span> <span class="st">"output-03/PURCHASE-1200px-72dpi-12.png"</span>, <span class="at">width =</span> <span class="dv">1200</span>, <span class="at">height =</span> <span class="dv">1200</span>, <span class="at">units =</span> <span class="st">"px"</span>, <span class="at">res =</span> <span class="dv">72</span>)</span>
+<span id="cb42-16"><a href="#cb42-16" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> </span>
+<span id="cb42-17"><a href="#cb42-17" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb42-18"><a href="#cb42-18" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span> </span>
+<span id="cb42-19"><a href="#cb42-19" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"bottom"</span>)) <span class="sc">+</span></span>
+<span id="cb42-20"><a href="#cb42-20" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_layout</span>(<span class="st">"Map of Housing Price"</span>, <span class="at">main.title.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"top"</span>), <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>))</span>
+<span id="cb42-21"><a href="#cb42-21" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb42-22"><a href="#cb42-22" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="at">filename =</span> <span class="st">"output-03/PURCHASE-1200px-72dpi-6.png"</span>, <span class="at">width =</span> <span class="dv">1200</span>, <span class="at">height =</span> <span class="dv">1200</span>, <span class="at">units =</span> <span class="st">"px"</span>, <span class="at">res =</span> <span class="dv">72</span>, <span class="at">point =</span> <span class="dv">6</span>)</span>
+<span id="cb42-23"><a href="#cb42-23" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> </span>
+<span id="cb42-24"><a href="#cb42-24" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb42-25"><a href="#cb42-25" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span> </span>
+<span id="cb42-26"><a href="#cb42-26" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"bottom"</span>)) <span class="sc">+</span></span>
+<span id="cb42-27"><a href="#cb42-27" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_layout</span>(<span class="st">"Map of Housing Price"</span>, <span class="at">main.title.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"top"</span>), <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>))</span>
+<span id="cb42-28"><a href="#cb42-28" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb42-29"><a href="#cb42-29" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="at">filename =</span> <span class="st">"output-03/PURCHASE-1200px-72dpi-18.png"</span>, <span class="at">width =</span> <span class="dv">1200</span>, <span class="at">height =</span> <span class="dv">1200</span>, <span class="at">units =</span> <span class="st">"px"</span>, <span class="at">res =</span> <span class="dv">72</span>, <span class="at">point =</span> <span class="dv">18</span>)</span>
+<span id="cb42-30"><a href="#cb42-30" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> </span>
+<span id="cb42-31"><a href="#cb42-31" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb42-32"><a href="#cb42-32" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span> </span>
+<span id="cb42-33"><a href="#cb42-33" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"bottom"</span>)) <span class="sc">+</span></span>
+<span id="cb42-34"><a href="#cb42-34" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_layout</span>(<span class="st">"Map of Housing Price"</span>, <span class="at">main.title.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"top"</span>), <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>))</span>
+<span id="cb42-35"><a href="#cb42-35" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb42-36"><a href="#cb42-36" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="at">filename =</span> <span class="st">"output-03/PURCHASE-8in-300dpi-12.png"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">units =</span> <span class="st">"in"</span>, <span class="at">res =</span> <span class="dv">300</span>)</span>
+<span id="cb42-37"><a href="#cb42-37" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> </span>
+<span id="cb42-38"><a href="#cb42-38" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb42-39"><a href="#cb42-39" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span> </span>
+<span id="cb42-40"><a href="#cb42-40" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"bottom"</span>)) <span class="sc">+</span></span>
+<span id="cb42-41"><a href="#cb42-41" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_layout</span>(<span class="st">"Map of Housing Price"</span>, <span class="at">main.title.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"top"</span>), <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>))</span>
+<span id="cb42-42"><a href="#cb42-42" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb42-43"><a href="#cb42-43" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="at">filename =</span> <span class="st">"output-03/PURCHASE-4in-300dpi-12.png"</span>, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">4</span>, <span class="at">units =</span> <span class="st">"in"</span>, <span class="at">res =</span> <span class="dv">300</span>)</span>
+<span id="cb42-44"><a href="#cb42-44" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> </span>
+<span id="cb42-45"><a href="#cb42-45" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb42-46"><a href="#cb42-46" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span> </span>
+<span id="cb42-47"><a href="#cb42-47" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"bottom"</span>)) <span class="sc">+</span></span>
+<span id="cb42-48"><a href="#cb42-48" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_layout</span>(<span class="st">"Map of Housing Price"</span>, <span class="at">main.title.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"top"</span>), <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>))</span>
+<span id="cb42-49"><a href="#cb42-49" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb42-50"><a href="#cb42-50" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="at">filename =</span> <span class="st">"output-03/PURCHASE-4in-72dpi-12.png"</span>, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">4</span>, <span class="at">units =</span> <span class="st">"in"</span>, <span class="at">res =</span> <span class="dv">72</span>)</span>
+<span id="cb42-51"><a href="#cb42-51" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> </span>
+<span id="cb42-52"><a href="#cb42-52" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb42-53"><a href="#cb42-53" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span> </span>
+<span id="cb42-54"><a href="#cb42-54" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"bottom"</span>)) <span class="sc">+</span></span>
+<span id="cb42-55"><a href="#cb42-55" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_layout</span>(<span class="st">"Map of Housing Price"</span>, <span class="at">main.title.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"top"</span>), <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>))</span>
+<span id="cb42-56"><a href="#cb42-56" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb42-57"><a href="#cb42-57" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="at">filename =</span> <span class="st">"output-03/PURCHASE-4in-72dpi-6.png"</span>, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">4</span>, <span class="at">units =</span> <span class="st">"in"</span>, <span class="at">res =</span> <span class="dv">72</span>, <span class="at">point =</span> <span class="dv">6</span>)</span>
+<span id="cb42-58"><a href="#cb42-58" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> </span>
+<span id="cb42-59"><a href="#cb42-59" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb42-60"><a href="#cb42-60" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span> </span>
+<span id="cb42-61"><a href="#cb42-61" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"bottom"</span>)) <span class="sc">+</span></span>
+<span id="cb42-62"><a href="#cb42-62" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_layout</span>(<span class="st">"Map of Housing Price"</span>, <span class="at">main.title.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"top"</span>), <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>))</span>
+<span id="cb42-63"><a href="#cb42-63" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb42-64"><a href="#cb42-64" aria-hidden="true" tabindex="-1"></a><span class="fu">png</span>(<span class="at">filename =</span> <span class="st">"output-03/PURCHASE-4in-72dpi-18.png"</span>, <span class="at">width =</span> <span class="dv">4</span>, <span class="at">height =</span> <span class="dv">4</span>, <span class="at">units =</span> <span class="st">"in"</span>, <span class="at">res =</span> <span class="dv">72</span>, <span class="at">point =</span> <span class="dv">18</span>)</span>
+<span id="cb42-65"><a href="#cb42-65" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> </span>
+<span id="cb42-66"><a href="#cb42-66" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb42-67"><a href="#cb42-67" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span> </span>
+<span id="cb42-68"><a href="#cb42-68" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"bottom"</span>)) <span class="sc">+</span></span>
+<span id="cb42-69"><a href="#cb42-69" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_layout</span>(<span class="st">"Map of Housing Price"</span>, <span class="at">main.title.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"top"</span>), <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>))</span>
+<span id="cb42-70"><a href="#cb42-70" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>可以看到，图片尺寸 <span class="math inline">\(l\)</span>、PPI <span class="math inline">\(p\)</span>、点大小 <span class="math inline">\(s\)</span> 都对生成的图片有影响。我们分别对 <code>units</code> 是物理长度和像素两种情况进行分析。</p>
+<p>由于 R 中所绘制的图都是矢量图，就像在一张 A4 纸上绘制函数图像一样。 例如，当我们需要在图上绘制 <span class="math inline">\((2,2)\)</span> 这个点时，如何确定这个点应该画在哪里？ 我们首先假定以 A4 纸的左下角为原点，沿纸边缘为坐标轴，1 cm 为单位长度。那么 <span class="math inline">\((2,2)\)</span> 就绘制在了距离原点 (2 cm, 2 cm) 的位置。 那如果我们规定 2 cm 为单位长度，这个点就会被绘制到 (4 cm, 4 cm) 的位置。 但是，实际上，为了让绘图内容以最大化的方式占满绘图空间，单位长度是根据绘制内容进行确定的，而且两个方向上的单位长度不一定一样。</p>
+<p>那如果我们有一个长 10 宽 10 的正方形，想要最大化绘制在 A4 纸上，并且要在外面留下一定长度的边距，那么就需要计算一下这个正方形的各个格点的坐标。 此时如果其他要求不变，要把这个正方形绘制到一张 A2 纸（A4纸的四倍）上，此时最然正方形的长宽还是 10 单位长度，但是一个单位长度的实际物理长度就变大了。 那么如果这个正方形内部有 64 个等间距的格点，相比在 A4 纸上绘制，这 64 个格点之间的间距就要大很多。 这就是输出图片尺寸 <span class="math inline">\(l\)</span> 的影响。</p>
+<p>但是实际上，无论是打印机、绘图仪还是纸笔，在绘图的时候，都是以一个很小的正方形代替一个数学意义上的点，这个点可以大可以小，类似于圆珠笔和记号笔的笔画差异。 当我们用圆珠笔画点的时候，画出来的点在物理尺寸上比较小，但是用记号笔时，画出来的点物理尺寸就比较大。 虽然这些点中心的位置是相同的，但是点的尺寸是不相同的。 使用粗的笔时，如果要让看起来形状和细的笔形状差不多，那这个符号就要画的大一些。 这就是输出点大小 <span class="math inline">\(s\)</span> 的影响。</p>
+<p>那么现在如果我们把这张纸扫描成图片，那么这个扫描仪每个像素的尺寸就决定了图片的清晰度。 如果这个扫描仪每英寸有 72 个像素（72 PPI），其输出图片的尺寸就会比每英寸有 300 个像素的扫描仪小很多。 如果我们都是用 300 PPI 的扫描仪，扫描 A2 纸得到的图像大小就会是扫描 A4 纸得到的图像大小的 4 倍。 这就是 PPI <span class="math inline">\(p\)</span> 的影响。</p>
+<p>所以，如果我们把 <code>units</code> 设置为物理长度，生成的位图的像素数就是宽高 <span class="math inline">\((w,h)\)</span> 与 PPI 的乘积，字体、符号的大小通过点大小 <span class="math inline">\(s\)</span> 控制。</p>
+<p>当 <code>units</code> 是像素时，程序需要保证输出的图片像素数是固定的，此时程序需要根据输出像素数和 PPI 来确定绘图区域的物理尺寸，进一步确定绘图单位长度。 例如，如果指定图片宽和高的像素数是 1200 px ，输出 PPI 是 300 ，那么绘图区域的物理尺寸就是 4 in。 如果指定图片宽和高的像素数改为是 2400 px，那么物理尺寸就是 8 in。 如果指定图片宽和高的像素数是 1200 px，把输出 PPI 改为 72，则绘图区域物理尺寸就是 <span class="math inline">\(16\frac{2}{3}\)</span> in。 剩下的就之前的过程没有区别了。</p>
+<blockquote class="blockquote">
+<p>需要指出的是，当图片放在电脑中时，是没有 DPI 的概念的。DPI 是指每英寸点数，当图片还是电脑中的文件时，只存在像素数，不存在物理尺寸。 只有当图片打印到纸上，或者显示到显示器上，此时图片被绘制出来，具有了物理尺寸，才涉及到 DPI 。 总的来说，同样一张图片，第一次打印出来占满一张 A4 纸，第二次打印出来占四分之一张 A4 纸，那么可以说第二次的 DPI 是第一次的两倍。 很多期刊投稿时对 DPI 有要求，而且不同类型的图片要求不同，在输出图片的时候， <code>res</code> 参数的值需要灵活设置。 即使设置了 <code>res</code> 参数为 300 ，但如果图片尺寸过小，排版时被放大，就依然有可能达不到印刷要求。 最保险的办法是直接根据纸张最大的尺寸绘制图片，选择最大的 PPI ，当然这就会大大增加图片的大小。 如果图片太多，导致超出了投稿文件容量上限，此时就需要根据图片实际排版，确定合适的尺寸。 因此，建议 <code>units</code> 参数传入物理长度，而不建议使用像素数。</p>
+</blockquote>
+<p>对于 tmap 包绘制的图，该包提供了一个函数 <code>tmap_save()</code> 来保存图片。 该函数第一个参数接收 tmap 相关绘图函数的返回值，参数 <code>filename</code> 为输出文件名，<code>width``height``units</code> 与 <code>png</code> 函数相同，<code>dpi</code> 与 <code>res</code> 对应，此外还有一些其他设置参数。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a>m <span class="ot">&lt;-</span> <span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> </span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span> </span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"bottom"</span>)) <span class="sc">+</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_layout</span>(<span class="st">"Map of Housing Price"</span>, <span class="at">main.title.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"top"</span>), <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>))</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a><span class="fu">tmap_save</span>(m, <span class="at">filename =</span> <span class="st">"output-03/PURCHASE_tmap.png"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">units =</span> <span class="st">"in"</span>, <span class="at">dpi =</span> <span class="dv">300</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="矢量图输出" class="level3" data-number="3.4.2">
+<h3 data-number="3.4.2" class="anchored" data-anchor-id="矢量图输出"><span class="header-section-number">3.4.2</span> 矢量图输出</h3>
+<p>对于矢量图来说，其格式非常的多，而且不同系统的支持也不一样。 在 Office 系列软件中，使用的 emf 格式的矢量图。在 LaTeX 等软件中，支持 eps 格式的矢量图。 虽然 PDF 格式是基本通用的，在任何系统上都能打开，但是也不能嵌入到 Word 中。 而 SVG 格式可以嵌入到 Word 中，基本也可以在各个系统上打开。但是其对于中文的处理还有一定的问题。</p>
+<p>这里以生成 PDF 格式和 SVG 格式的图片为例，演示如何输出矢量图。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pdf</span>(<span class="at">file =</span> <span class="st">"output-03/PURCHASE.pdf"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">pointsize =</span> <span class="dv">12</span>)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> </span>
+<span id="cb44-3"><a href="#cb44-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb44-4"><a href="#cb44-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span> </span>
+<span id="cb44-5"><a href="#cb44-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"bottom"</span>)) <span class="sc">+</span></span>
+<span id="cb44-6"><a href="#cb44-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_layout</span>(<span class="st">"Map of Housing Price"</span>, <span class="at">main.title.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"top"</span>), <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>))</span>
+<span id="cb44-7"><a href="#cb44-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="fu">svg</span>(<span class="at">file =</span> <span class="st">"output-03/PURCHASE.svg"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">pointsize =</span> <span class="dv">12</span>)</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> </span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span> </span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"bottom"</span>)) <span class="sc">+</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_layout</span>(<span class="st">"Map of Housing Price"</span>, <span class="at">main.title.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"top"</span>), <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>))</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>可以发现，对于矢量图，只需要设置宽高和点大小即可，使用起来还是比较方便的。当然还有很多其他参数，例如字体的设置等，这里就不一一介绍了，只演示一下如何输出衬线字体的图片。</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a><span class="fu">svg</span>(<span class="at">file =</span> <span class="st">"output-03/PURCHASE_serif.svg"</span>, <span class="at">width =</span> <span class="dv">8</span>, <span class="at">height =</span> <span class="dv">8</span>, <span class="at">pointsize =</span> <span class="dv">12</span>, <span class="at">family =</span> <span class="st">"serif"</span>)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(demo.shp) <span class="sc">+</span> </span>
+<span id="cb46-3"><a href="#cb46-3" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE"</span>, <span class="at">size =</span> <span class="fl">0.2</span>) <span class="sc">+</span> </span>
+<span id="cb46-4"><a href="#cb46-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_compass</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"top"</span>)) <span class="sc">+</span> </span>
+<span id="cb46-5"><a href="#cb46-5" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_scale_bar</span>(<span class="at">position =</span> <span class="fu">c</span>(<span class="st">"right"</span>, <span class="st">"bottom"</span>)) <span class="sc">+</span></span>
+<span id="cb46-6"><a href="#cb46-6" aria-hidden="true" tabindex="-1"></a>    <span class="fu">tm_layout</span>(<span class="st">"Map of Housing Price"</span>, <span class="at">main.title.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"top"</span>), <span class="at">legend.position =</span> <span class="fu">c</span>(<span class="st">"left"</span>, <span class="st">"bottom"</span>))</span>
+<span id="cb46-7"><a href="#cb46-7" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "已复制");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "已复制");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./02-数据预处理.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">数据预处理</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./04-数据分析.html" class="pagination-link">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">数据分析</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+</body></html>
