@@ -210,60 +210,221 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </header>
 
 <p>本节主要介绍空间数据分析的方法，分为非空间数据分析和空间数据分析两部分。</p>
-<div class="cell" data-execution_count="1">
+<div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>londonhp <span class="ot">&lt;-</span> rgdal<span class="sc">::</span><span class="fu">readOGR</span>(<span class="st">"data/LNHP03.shp"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Warning message in OGRSpatialRef(dsn, layer, morphFromESRI = morphFromESRI, dumpSRS = dumpSRS, :
-“Discarded datum OSGB_1936 in CRS definition: +proj=tmerc +lat_0=49 +lon_0=-2 +k=0.9996012717 +x_0=400000 +y_0=-100000 +ellps=airy +units=m +no_defs”</code></pre>
+<pre><code>Please note that rgdal will be retired during October 2023,
+plan transition to sf/stars/terra functions using GDAL and PROJ
+at your earliest convenience.
+See https://r-spatial.org/r/2023/05/15/evolution4.html and https://github.com/r-spatial/evolution
+rgdal: version: 1.6-7, (SVN revision 1203)
+Geospatial Data Abstraction Library extensions to R successfully loaded
+Loaded GDAL runtime: GDAL 3.5.3, released 2022/10/21
+Path to GDAL shared files: /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library/rgdal/gdal
+ GDAL does not use iconv for recoding strings.
+GDAL binary built with GEOS: TRUE 
+Loaded PROJ runtime: Rel. 9.1.0, September 1st, 2022, [PJ_VERSION: 910]
+Path to PROJ shared files: /Library/Frameworks/R.framework/Versions/4.2-arm64/Resources/library/rgdal/proj
+PROJ CDN enabled: TRUE
+Linking to sp version:1.6-1
+To mute warnings of possible GDAL/OSR exportToProj4() degradation,
+use options("rgdal_show_exportToProj4_warnings"="none") before loading sp or rgdal.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: OGR support is provided by the sf and terra packages among others</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: OGR support is provided by the sf and terra packages among others</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: OGR support is provided by the sf and terra packages among others</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: OGR support is provided by the sf and terra packages among others</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: OGR support is provided by the sf and terra packages among others</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: OGR support is provided by the sf and terra packages among others</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning: OGR support is provided by the sf and terra packages among others</code></pre>
 </div>
 <div class="cell-output cell-output-stdout">
 <pre><code>OGR data source with driver: ESRI Shapefile 
-Source: "/home/hpdell/RTraining/data/LNHP03.shp", layer: "LNHP03"
+Source: "/Users/yigong/Documents/RTraining/data/LNHP03.shp", layer: "LNHP03"
 with 2108 features
 It has 17 fields</code></pre>
 </div>
 </div>
 <p>数据集 <code>londonborough</code> 数据包含了该地区的行政边界，使用之前需要先矫正一下坐标系。</p>
-<div class="cell" data-execution_count="2">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sp)</span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(LondonBorough, <span class="at">package =</span> <span class="st">"GWmodel"</span>)</span>
-<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">proj4string</span>(londonborough) <span class="ot">&lt;-</span> <span class="fu">proj4string</span>(londonhp)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning message in proj4string(londonhp):
-“CRS object has comment, which is lost in output”
-Warning message in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer_proj = prefer_proj):
-“Discarded datum Unknown based on Airy 1830 ellipsoid in CRS definition”</code></pre>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sp)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(LondonBorough, <span class="at">package =</span> <span class="st">"GWmodel"</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">proj4string</span>(londonborough) <span class="ot">&lt;-</span> <span class="fu">proj4string</span>(londonhp)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-</div>
-<div class="cell" data-execution_count="3">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(tmap)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <section id="相关分析" class="level2" data-number="4.1">
 <h2 data-number="4.1" class="anchored" data-anchor-id="相关分析"><span class="header-section-number">4.1</span> 相关分析</h2>
 <p>相关分析是分析变量之间的相关性，从而为回归分析的变量选择提供依据。 进行相关分析的包有很多，这里主要介绍 <code>PerformanceAnalytics</code> 的 <code>chart.Correlation()</code> 函数。该函数的特点是提供的信息比较多，有散点图、直方图、相关系数值等，而且相关系数值的字体大小会随着相关系数的大小而变化。</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>PerformanceAnalytics<span class="sc">::</span><span class="fu">chart.Correlation</span>(londonhp<span class="sc">@</span>data[, <span class="fu">c</span>(<span class="st">"PURCHASE"</span>, <span class="st">"BATH2"</span>, <span class="st">"FLOORSZ"</span>, <span class="st">"PROF"</span>, <span class="st">"UNEMPLOY"</span>)], <span class="at">histogram =</span> T)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>PerformanceAnalytics<span class="sc">::</span><span class="fu">chart.Correlation</span>(londonhp<span class="sc">@</span>data[, <span class="fu">c</span>(<span class="st">"PURCHASE"</span>, <span class="st">"BATH2"</span>, <span class="st">"FLOORSZ"</span>, <span class="st">"PROF"</span>, <span class="st">"UNEMPLOY"</span>)], <span class="at">histogram =</span> T)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in par(usr): argument 1 does not name a graphical parameter
+
+Warning in par(usr): argument 1 does not name a graphical parameter
+
+Warning in par(usr): argument 1 does not name a graphical parameter
+
+Warning in par(usr): argument 1 does not name a graphical parameter
+
+Warning in par(usr): argument 1 does not name a graphical parameter
+
+Warning in par(usr): argument 1 does not name a graphical parameter
+
+Warning in par(usr): argument 1 does not name a graphical parameter
+
+Warning in par(usr): argument 1 does not name a graphical parameter
+
+Warning in par(usr): argument 1 does not name a graphical parameter
+
+Warning in par(usr): argument 1 does not name a graphical parameter</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="04-数据分析_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 <p>由此我们可以看到，<code>PURCHASE</code> 变量和 <code>BATH2</code> <code>FLOORSZ</code> <code>PROF</code> 三个变量相关性比较强。</p>
 <p>该函数默认使用皮尔逊相关系数，如果像计算斯皮尔曼相关系数，则使用 <code>method</code> 参数进行指定。</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>PerformanceAnalytics<span class="sc">::</span><span class="fu">chart.Correlation</span>(londonhp<span class="sc">@</span>data[, <span class="fu">c</span>(<span class="st">"PURCHASE"</span>, <span class="st">"BATH2"</span>, <span class="st">"FLOORSZ"</span>, <span class="st">"PROF"</span>, <span class="st">"UNEMPLOY"</span>)], <span class="at">histogram =</span> T, <span class="at">method =</span> <span class="st">"spearman"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>PerformanceAnalytics<span class="sc">::</span><span class="fu">chart.Correlation</span>(londonhp<span class="sc">@</span>data[, <span class="fu">c</span>(<span class="st">"PURCHASE"</span>, <span class="st">"BATH2"</span>, <span class="st">"FLOORSZ"</span>, <span class="st">"PROF"</span>, <span class="st">"UNEMPLOY"</span>)], <span class="at">histogram =</span> T, <span class="at">method =</span> <span class="st">"spearman"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in cor.test.default(as.numeric(x), as.numeric(y), method = method):
+无法给连结计算精確p值</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in par(usr): argument 1 does not name a graphical parameter</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in cor.test.default(as.numeric(x), as.numeric(y), method = method):
+无法给连结计算精確p值</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in par(usr): argument 1 does not name a graphical parameter</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in cor.test.default(as.numeric(x), as.numeric(y), method = method):
+无法给连结计算精確p值</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in par(usr): argument 1 does not name a graphical parameter</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in cor.test.default(as.numeric(x), as.numeric(y), method = method):
+无法给连结计算精確p值</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in par(usr): argument 1 does not name a graphical parameter</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in cor.test.default(as.numeric(x), as.numeric(y), method = method):
+无法给连结计算精確p值</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in par(usr): argument 1 does not name a graphical parameter</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in cor.test.default(as.numeric(x), as.numeric(y), method = method):
+无法给连结计算精確p值</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in par(usr): argument 1 does not name a graphical parameter</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in cor.test.default(as.numeric(x), as.numeric(y), method = method):
+无法给连结计算精確p值</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in par(usr): argument 1 does not name a graphical parameter</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in cor.test.default(as.numeric(x), as.numeric(y), method = method):
+无法给连结计算精確p值</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in par(usr): argument 1 does not name a graphical parameter</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in cor.test.default(as.numeric(x), as.numeric(y), method = method):
+无法给连结计算精確p值</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in par(usr): argument 1 does not name a graphical parameter</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in cor.test.default(as.numeric(x), as.numeric(y), method = method):
+无法给连结计算精確p值</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in par(usr): argument 1 does not name a graphical parameter</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="04-数据分析_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 </section>
 <section id="空间相关分析" class="level2" data-number="4.2">
 <h2 data-number="4.2" class="anchored" data-anchor-id="空间相关分析"><span class="header-section-number">4.2</span> 空间相关分析</h2>
 <p>空间相关分析，主要根据全局莫兰指数和局部莫兰指数进行分析。主要用到的函数包为 <code>spdep</code> 包。</p>
 <div class="cell" data-scrolled="true">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spdep)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(spdep)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>载入需要的程辑包：spData</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>To access larger datasets in this package, install the spDataLarge
+package with: `install.packages('spDataLarge',
+repos='https://nowosad.github.io/drat/', type='source')`</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>载入需要的程辑包：sf</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Linking to GEOS 3.11.0, GDAL 3.5.3, PROJ 9.1.0; sf_use_s2() is TRUE</code></pre>
+</div>
 </div>
 <section id="全局空间自相关" class="level3" data-number="4.2.1">
 <h3 data-number="4.2.1" class="anchored" data-anchor-id="全局空间自相关"><span class="header-section-number">4.2.1</span> 全局空间自相关</h3>
 <p>莫兰指数的定义如下：<span class="math display">\[ I = \frac{n}{\sum_i \sum_j w_{ij}} \frac{ \sum_i \sum_j w_{ij} (z_i - \bar{z})(z_j - \bar{z}) }{ \sum_i (z_i - \bar{z})^2 } \]</span> 其中 <span class="math inline">\(w\)</span> 为根据空间邻域计算的权重矩阵。</p>
 <p>在 R 中，该值的计算方法是</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>londonhp.nb <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(londonhp, <span class="at">k =</span> <span class="dv">4</span>, <span class="at">longlat =</span> F))</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>londonhp.nb.s <span class="ot">&lt;-</span> <span class="fu">make.sym.nb</span>(londonhp.nb)</span>
-<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">moran.test</span>(londonhp<span class="sc">$</span>PURCHASE, <span class="at">listw =</span> <span class="fu">nb2listw</span>(londonhp.nb.s))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a>londonhp.nb <span class="ot">&lt;-</span> <span class="fu">knn2nb</span>(<span class="fu">knearneigh</span>(londonhp, <span class="at">k =</span> <span class="dv">4</span>, <span class="at">longlat =</span> F))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in knearneigh(londonhp, k = 4, longlat = F): knearneigh: identical
+points found</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Warning in knearneigh(londonhp, k = 4, longlat = F): knearneigh: kd_tree not
+available for identical points</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a>londonhp.nb.s <span class="ot">&lt;-</span> <span class="fu">make.sym.nb</span>(londonhp.nb)</span>
+<span id="cb44-2"><a href="#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="fu">moran.test</span>(londonhp<span class="sc">$</span>PURCHASE, <span class="at">listw =</span> <span class="fu">nb2listw</span>(londonhp.nb.s))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Moran I test under randomisation
+
+data:  londonhp$PURCHASE  
+weights: nb2listw(londonhp.nb.s)    
+
+Moran I statistic standard deviate = 21.813, p-value &lt; 2.2e-16
+alternative hypothesis: greater
+sample estimates:
+Moran I statistic       Expectation          Variance 
+     0.3021153755     -0.0004746084      0.0001924277 </code></pre>
+</div>
 </div>
 <blockquote class="blockquote">
 <p>中间涉及到 <code>knn2nb</code> <code>knearneigh</code> <code>make.sym.nb</code> <code>nb2listw</code> 几个函数，都是用来生成空间邻域权重矩阵的，具体含义和使用方法请查看帮助文档。</p>
@@ -280,19 +441,37 @@ Warning message in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer
 <p>局部空间自相关使用局部莫兰指数，其定义如下 <span class="math display">\[ I_i = \frac{n}{\sum_j w_{ij}} \frac{ \sum_j w_{ij} (z_i - \bar{z})(z_j - \bar{z}) }{ \sum_k (z_k - \bar{z})^2 } \]</span> 其中 <span class="math inline">\(w\)</span> 为根据空间邻域计算的权重矩阵。</p>
 <p>在 R 中使用 <code>localmoran()</code> 函数进行计算，</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>londonhp.localmoran.PURCHASE <span class="ot">&lt;-</span> <span class="fu">localmoran</span>(londonhp<span class="sc">$</span>PURCHASE, <span class="at">listw =</span> <span class="fu">nb2listw</span>(londonhp.nb.s, <span class="at">style =</span> <span class="st">"W"</span>))</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(londonhp.localmoran.PURCHASE)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>londonhp.localmoran.PURCHASE <span class="ot">&lt;-</span> <span class="fu">localmoran</span>(londonhp<span class="sc">$</span>PURCHASE, <span class="at">listw =</span> <span class="fu">nb2listw</span>(londonhp.nb.s, <span class="at">style =</span> <span class="st">"W"</span>))</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(londonhp.localmoran.PURCHASE)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           Ii          E.Ii      Var.Ii       Z.Ii Pr(z != E(Ii))
+1  0.55308735 -4.303136e-04 0.226354757  1.1634204      0.2446590
+2  0.51607560 -3.442008e-04 0.181073053  1.2136011      0.2249001
+3  0.66992835 -1.355265e-03 0.712240427  0.7954131      0.4263732
+4 -0.16735547 -8.740320e-05 0.045991853 -0.7799604      0.4354142
+5  0.05380860 -3.747224e-04 0.197123515  0.1220384      0.9028686
+6  0.03048876 -6.919136e-06 0.003641165  0.5053801      0.6132919</code></pre>
+</div>
 </div>
 <p>下面我们可以将其在地图上进行可视化，来观察变量的局部相关性分布情况。</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>londonhp.localmoran.PURCHASE.sdf <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(londonhp<span class="sc">@</span>coords, londonhp.localmoran.PURCHASE)</span>
-<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coordinates</span>(londonhp.localmoran.PURCHASE.sdf) <span class="ot">&lt;-</span> <span class="er">~</span> coords.x1 <span class="sc">+</span> coords.x2</span>
-<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a><span class="fu">proj4string</span>(londonhp.localmoran.PURCHASE.sdf) <span class="ot">&lt;-</span> <span class="fu">proj4string</span>(londonhp)</span>
-<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(londonborough) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(londonhp.localmoran.PURCHASE.sdf) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"Ii"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb48"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" aria-hidden="true" tabindex="-1"></a>londonhp.localmoran.PURCHASE.sdf <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(londonhp<span class="sc">@</span>coords, londonhp.localmoran.PURCHASE)</span>
+<span id="cb48-2"><a href="#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="fu">coordinates</span>(londonhp.localmoran.PURCHASE.sdf) <span class="ot">&lt;-</span> <span class="er">~</span> coords.x1 <span class="sc">+</span> coords.x2</span>
+<span id="cb48-3"><a href="#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="fu">proj4string</span>(londonhp.localmoran.PURCHASE.sdf) <span class="ot">&lt;-</span> <span class="fu">proj4string</span>(londonhp)</span>
+<span id="cb48-4"><a href="#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(londonborough) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(londonhp.localmoran.PURCHASE.sdf) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"Ii"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Variable(s) "Ii" contains positive and negative values, so midpoint is set to 0. Set midpoint = NA to show the full spectrum of the color palette.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="04-数据分析_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 <p>函数 <code>moran.plot</code> 用于辅助查看空间自相关特征，使用方法如下</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">moran.plot</span>(londonhp<span class="sc">$</span>PURCHASE, <span class="fu">nb2listw</span>(londonhp.nb.s, <span class="at">style =</span> <span class="st">"W"</span>), <span class="at">pch =</span> <span class="dv">19</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb50"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" aria-hidden="true" tabindex="-1"></a><span class="fu">moran.plot</span>(londonhp<span class="sc">$</span>PURCHASE, <span class="fu">nb2listw</span>(londonhp.nb.s, <span class="at">style =</span> <span class="st">"W"</span>), <span class="at">pch =</span> <span class="dv">19</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="04-数据分析_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 <p>根据点集落入的象限，可以分析空间自相关特征。</p>
 </section>
@@ -300,88 +479,43 @@ Warning message in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer
 <section id="地理加权分析" class="level2" data-number="4.3">
 <h2 data-number="4.3" class="anchored" data-anchor-id="地理加权分析"><span class="header-section-number">4.3</span> 地理加权分析</h2>
 <p>地理加权分析，其方法主要由 <code>GWmodel</code> 包提供，包括地理加权汇总统计分析（GWSS）、地理加权回归分析（GWR）、地理加权主成分分析（GWPCA）、地理加权判别分析（GWDA）等。 不同地分析方法分别有不同的作用，需要搭配使用。</p>
-<div class="cell" data-scrolled="true" data-execution_count="4">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GWmodel)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-scrolled="true">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(GWmodel)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stderr">
-<pre><code>Loading required package: maptools
+<pre><code>载入需要的程辑包：maptools</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Checking rgeos availability: TRUE
+Please note that 'maptools' will be retired during 2023,
+plan transition at your earliest convenience;
+some functionality will be moved to 'sp'.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>载入需要的程辑包：robustbase</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>载入需要的程辑包：Rcpp</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>载入需要的程辑包：spatialreg</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>载入需要的程辑包：Matrix</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>
+载入程辑包：'spatialreg'</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>The following objects are masked from 'package:spdep':
 
-Checking rgeos availability: TRUE
-
-Loading required package: robustbase
-
-Loading required package: Rcpp
-
-Loading required package: spatialreg
-
-Loading required package: spData
-
-To access larger datasets in this package, install the spDataLarge
-package with: `install.packages('spDataLarge',
-repos='https://nowosad.github.io/drat/', type='source')`
-
-Loading required package: Matrix
-
-Registered S3 methods overwritten by 'spatialreg':
-  method                   from 
-  residuals.stsls          spdep
-  deviance.stsls           spdep
-  coef.stsls               spdep
-  print.stsls              spdep
-  summary.stsls            spdep
-  print.summary.stsls      spdep
-  residuals.gmsar          spdep
-  deviance.gmsar           spdep
-  coef.gmsar               spdep
-  fitted.gmsar             spdep
-  print.gmsar              spdep
-  summary.gmsar            spdep
-  print.summary.gmsar      spdep
-  print.lagmess            spdep
-  summary.lagmess          spdep
-  print.summary.lagmess    spdep
-  residuals.lagmess        spdep
-  deviance.lagmess         spdep
-  coef.lagmess             spdep
-  fitted.lagmess           spdep
-  logLik.lagmess           spdep
-  fitted.SFResult          spdep
-  print.SFResult           spdep
-  fitted.ME_res            spdep
-  print.ME_res             spdep
-  print.lagImpact          spdep
-  plot.lagImpact           spdep
-  summary.lagImpact        spdep
-  HPDinterval.lagImpact    spdep
-  print.summary.lagImpact  spdep
-  print.sarlm              spdep
-  summary.sarlm            spdep
-  residuals.sarlm          spdep
-  deviance.sarlm           spdep
-  coef.sarlm               spdep
-  vcov.sarlm               spdep
-  fitted.sarlm             spdep
-  logLik.sarlm             spdep
-  anova.sarlm              spdep
-  predict.sarlm            spdep
-  print.summary.sarlm      spdep
-  print.sarlm.pred         spdep
-  as.data.frame.sarlm.pred spdep
-  residuals.spautolm       spdep
-  deviance.spautolm        spdep
-  coef.spautolm            spdep
-  fitted.spautolm          spdep
-  print.spautolm           spdep
-  summary.spautolm         spdep
-  logLik.spautolm          spdep
-  print.summary.spautolm   spdep
-  print.WXImpact           spdep
-  summary.WXImpact         spdep
-  print.summary.WXImpact   spdep
-  predict.SLX              spdep
-
-Welcome to GWmodel version 2.2-2.
-The new version of GWmodel 2.2-2 now is ready
-</code></pre>
+    get.ClusterOption, get.coresOption, get.mcOption,
+    get.VerboseOption, get.ZeroPolicyOption, set.ClusterOption,
+    set.coresOption, set.mcOption, set.VerboseOption,
+    set.ZeroPolicyOption</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Welcome to GWmodel version 2.2-9.</code></pre>
 </div>
 </div>
 <section id="gwr" class="level3" data-number="4.3.1">
@@ -398,41 +532,348 @@ The new version of GWmodel 2.2-2 now is ready
 <h4 data-number="4.3.1.1" class="anchored" data-anchor-id="模型优选"><span class="header-section-number">4.3.1.1</span> 模型优选</h4>
 <p>使用 <code>gwr.model.selection()</code> 函数进行模型优选，该函数需要指定因变量和自变量。</p>
 <div class="cell" data-scrolled="true">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>londonhp.indep.vars <span class="ot">&lt;-</span> <span class="fu">colnames</span>(londonhp<span class="sc">@</span>data)[<span class="sc">-</span><span class="dv">1</span>]</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>londonhp.depen.vars <span class="ot">&lt;-</span> <span class="fu">colnames</span>(londonhp<span class="sc">@</span>data)[<span class="dv">1</span>]</span>
-<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>londonhp.model.sel <span class="ot">&lt;-</span> <span class="fu">gwr.model.selection</span>(<span class="at">DeVar =</span> londonhp.depen.vars, <span class="at">InDeVars =</span> londonhp.indep.vars, <span class="at">data =</span> londonhp, </span>
-<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">bw =</span> <span class="cn">Inf</span>, <span class="at">adaptive =</span> T, <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">longlat =</span> F,</span>
-<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">parallel.method =</span> <span class="st">"omp"</span>, <span class="at">parallel.arg =</span> <span class="dv">8</span>)</span>
-<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>londonhp.model.sort <span class="ot">&lt;-</span> <span class="fu">gwr.model.sort</span>(londonhp.model.sel, <span class="fu">length</span>(londonhp.indep.vars), londonhp.model.sel[[<span class="dv">2</span>]][,<span class="dv">2</span>])</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a>londonhp.indep.vars <span class="ot">&lt;-</span> <span class="fu">colnames</span>(londonhp<span class="sc">@</span>data)[<span class="sc">-</span><span class="dv">1</span>]</span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>londonhp.depen.vars <span class="ot">&lt;-</span> <span class="fu">colnames</span>(londonhp<span class="sc">@</span>data)[<span class="dv">1</span>]</span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a>londonhp.model.sel <span class="ot">&lt;-</span> <span class="fu">gwr.model.selection</span>(<span class="at">DeVar =</span> londonhp.depen.vars, <span class="at">InDeVars =</span> londonhp.indep.vars, <span class="at">data =</span> londonhp, </span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a>                                          <span class="at">bw =</span> <span class="cn">Inf</span>, <span class="at">adaptive =</span> T, <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">longlat =</span> F)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Now calibrating the model: 
+ PURCHASE~FLOORSZ 
+Now calibrating the model: 
+ PURCHASE~TYPETRRD 
+Now calibrating the model: 
+ PURCHASE~TYPEBNGLW 
+Now calibrating the model: 
+ PURCHASE~TYPEFLAT 
+Now calibrating the model: 
+ PURCHASE~BLDPWW1 
+Now calibrating the model: 
+ PURCHASE~BLDPOSTW 
+Now calibrating the model: 
+ PURCHASE~BLD60S 
+Now calibrating the model: 
+ PURCHASE~BLD70S 
+Now calibrating the model: 
+ PURCHASE~BLD80S 
+Now calibrating the model: 
+ PURCHASE~BATH2 
+Now calibrating the model: 
+ PURCHASE~BEDS2 
+Now calibrating the model: 
+ PURCHASE~GARAGE1 
+Now calibrating the model: 
+ PURCHASE~CENTHEAT 
+Now calibrating the model: 
+ PURCHASE~UNEMPLOY 
+Now calibrating the model: 
+ PURCHASE~PROF 
+Now calibrating the model: 
+ PURCHASE~BLDINTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+TYPETRRD 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+TYPEBNGLW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+TYPEFLAT 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+BLDPWW1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+BLDPOSTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+BLD60S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+BLD70S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+BLD80S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+BATH2 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+BEDS2 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+GARAGE1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+CENTHEAT 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+UNEMPLOY 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+BLDINTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+TYPETRRD 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+TYPEBNGLW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+TYPEFLAT 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+BLDPWW1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+BLDPOSTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+BLD60S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+BLD70S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+BLD80S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+BATH2 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+BEDS2 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+GARAGE1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+CENTHEAT 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+BLDINTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+TYPETRRD 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+TYPEBNGLW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+TYPEFLAT 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BLDPWW1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BLDPOSTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BLD60S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BLD70S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BLD80S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BEDS2 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+GARAGE1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+CENTHEAT 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BLDINTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+TYPETRRD 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+TYPEBNGLW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+TYPEFLAT 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLDPWW1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLDPOSTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD60S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD80S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BEDS2 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+GARAGE1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+CENTHEAT 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLDINTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+TYPETRRD 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+TYPEBNGLW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+TYPEFLAT 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLDPWW1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLDPOSTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD80S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BEDS2 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+GARAGE1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+CENTHEAT 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLDINTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPETRRD 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEBNGLW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+BLDPWW1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+BLDPOSTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+BLD80S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+BEDS2 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+GARAGE1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+CENTHEAT 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+BLDINTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPEBNGLW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+BLDPWW1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+BLDPOSTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+BLD80S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+BEDS2 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+GARAGE1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+CENTHEAT 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+BLDINTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+TYPEBNGLW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPWW1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLD80S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BEDS2 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+GARAGE1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+CENTHEAT 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDINTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+TYPEBNGLW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+BLDPWW1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+BLD80S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+BEDS2 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+GARAGE1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+BLDINTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+TYPEBNGLW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BLDPWW1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BLD80S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BEDS2 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+GARAGE1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BLDINTW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BLDINTW+TYPEBNGLW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BLDINTW+BLDPWW1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BLDINTW+BLD80S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BLDINTW+BEDS2 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BLDINTW+GARAGE1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BLDINTW+GARAGE1+TYPEBNGLW 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BLDINTW+GARAGE1+BLDPWW1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BLDINTW+GARAGE1+BLD80S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BLDINTW+GARAGE1+BEDS2 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BLDINTW+GARAGE1+TYPEBNGLW+BLDPWW1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BLDINTW+GARAGE1+TYPEBNGLW+BLD80S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BLDINTW+GARAGE1+TYPEBNGLW+BEDS2 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BLDINTW+GARAGE1+TYPEBNGLW+BEDS2+BLDPWW1 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BLDINTW+GARAGE1+TYPEBNGLW+BEDS2+BLD80S 
+Now calibrating the model: 
+ PURCHASE~FLOORSZ+PROF+UNEMPLOY+BATH2+BLD70S+BLD60S+TYPEFLAT+TYPETRRD+BLDPOSTW+CENTHEAT+BLDINTW+GARAGE1+TYPEBNGLW+BEDS2+BLD80S+BLDPWW1 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>londonhp.model.sort <span class="ot">&lt;-</span> <span class="fu">gwr.model.sort</span>(londonhp.model.sel, <span class="fu">length</span>(londonhp.indep.vars), londonhp.model.sel[[<span class="dv">2</span>]][,<span class="dv">2</span>])</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>然后根据下面三张图，可以分析究竟应该选择哪个模型</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 模型列表</span></span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gwr.model.view</span>(<span class="at">DeVar =</span> londonhp.depen.vars, <span class="at">InDeVars =</span> londonhp.indep.vars, londonhp.model.sort[[<span class="dv">1</span>]])</span>
-<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="do">## 模型 AIC 值</span></span>
-<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>londonhp.model.ruler <span class="ot">&lt;-</span> londonhp.model.sort[[<span class="dv">2</span>]][,<span class="dv">2</span>]</span>
-<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(londonhp.model.ruler, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span>
-<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a><span class="do">## 模型 AIC 变化</span></span>
-<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>londonhp.model.ruler.diff <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">diff</span>(londonhp.model.ruler))</span>
-<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(londonhp.model.ruler.diff, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>, <span class="dv">0</span>))</span>
-<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="sc">-</span><span class="dv">3</span>)</span>
-<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(londonhp.model.ruler.diff), <span class="at">y =</span> londonhp.model.ruler.diff, <span class="at">labels =</span> <span class="fu">as.character</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(londonhp.model.ruler.diff)))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb64"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb64-1"><a href="#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 模型列表</span></span>
+<span id="cb64-2"><a href="#cb64-2" aria-hidden="true" tabindex="-1"></a><span class="fu">gwr.model.view</span>(<span class="at">DeVar =</span> londonhp.depen.vars, <span class="at">InDeVars =</span> londonhp.indep.vars, londonhp.model.sort[[<span class="dv">1</span>]])</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="04-数据分析_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 模型 AIC 值</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>londonhp.model.ruler <span class="ot">&lt;-</span> londonhp.model.sort[[<span class="dv">2</span>]][,<span class="dv">2</span>]</span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(londonhp.model.ruler, <span class="at">type =</span> <span class="st">"b"</span>, <span class="at">pch =</span> <span class="dv">20</span>, <span class="at">lty =</span> <span class="dv">2</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="04-数据分析_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb66"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb66-1"><a href="#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="do">## 模型 AIC 变化</span></span>
+<span id="cb66-2"><a href="#cb66-2" aria-hidden="true" tabindex="-1"></a>londonhp.model.ruler.diff <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="fu">diff</span>(londonhp.model.ruler))</span>
+<span id="cb66-3"><a href="#cb66-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(londonhp.model.ruler.diff, <span class="at">ylim =</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">50</span>, <span class="dv">0</span>))</span>
+<span id="cb66-4"><a href="#cb66-4" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(<span class="at">h =</span> <span class="sc">-</span><span class="dv">3</span>)</span>
+<span id="cb66-5"><a href="#cb66-5" aria-hidden="true" tabindex="-1"></a><span class="fu">text</span>(<span class="at">x =</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(londonhp.model.ruler.diff), <span class="at">y =</span> londonhp.model.ruler.diff, <span class="at">labels =</span> <span class="fu">as.character</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">length</span>(londonhp.model.ruler.diff)))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="04-数据分析_files/figure-html/unnamed-chunk-13-3.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 <p>可以看到，第 115 个模型是比较好的模型。下面有两种方法获取该模型，一种是根据第一张图查找 115 号模型的自变量。 另一种方法是，直接根据输出结果获取表达式。</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>londonhp.model.best <span class="ot">&lt;-</span> londonhp.model.sort[[<span class="dv">1</span>]][[<span class="dv">115</span>]]</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>londonhp.model.formula <span class="ot">&lt;-</span> <span class="fu">formula</span>(londonhp.model.best[[<span class="dv">1</span>]])</span>
-<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>londonhp.model.indep <span class="ot">&lt;-</span> londonhp.model.best[[<span class="dv">2</span>]]</span>
-<span id="cb18-4"><a href="#cb18-4" aria-hidden="true" tabindex="-1"></a>londonhp.model.formula</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>londonhp.model.best <span class="ot">&lt;-</span> londonhp.model.sort[[<span class="dv">1</span>]][[<span class="dv">115</span>]]</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>londonhp.model.formula <span class="ot">&lt;-</span> <span class="fu">formula</span>(londonhp.model.best[[<span class="dv">1</span>]])</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>londonhp.model.indep <span class="ot">&lt;-</span> londonhp.model.best[[<span class="dv">2</span>]]</span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>londonhp.model.formula</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>PURCHASE ~ FLOORSZ + PROF + UNEMPLOY + BATH2 + BLD70S + BLD60S + 
+    TYPEFLAT + TYPETRRD + BLDPOSTW + CENTHEAT</code></pre>
+</div>
 </div>
 </section>
 <section id="带宽优选" class="level4" data-number="4.3.1.2">
 <h4 data-number="4.3.1.2" class="anchored" data-anchor-id="带宽优选"><span class="header-section-number">4.3.1.2</span> 带宽优选</h4>
 <p>在选好了模型的基础上，使用 <code>bw.gwr()</code> 函数进行带宽优选。</p>
 <div class="cell" data-scrolled="true">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>londonhp.bw <span class="ot">&lt;-</span> <span class="fu">bw.gwr</span>(londonhp.model.formula, londonhp,</span>
-<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">adaptive =</span> T, <span class="at">longlat =</span> F,</span>
-<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>                      <span class="at">parallel.method =</span> <span class="st">"omp"</span>, <span class="at">parallel.arg =</span> <span class="dv">8</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a>londonhp.bw <span class="ot">&lt;-</span> <span class="fu">bw.gwr</span>(</span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>  londonhp.model.formula, londonhp,</span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">adaptive =</span> T, <span class="at">longlat =</span> F)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Take a cup of tea and have a break, it will take a few minutes.
+          -----A kind suggestion from GWmodel development group
+Adaptive bandwidth: 1310 CV score: 3.1374e+12 
+Adaptive bandwidth: 818 CV score: 3.045352e+12 
+Adaptive bandwidth: 512 CV score: 2.936046e+12 
+Adaptive bandwidth: 325 CV score: 2.812869e+12 
+Adaptive bandwidth: 207 CV score: 2.678671e+12 
+Adaptive bandwidth: 136 CV score: 2.553181e+12 
+Adaptive bandwidth: 90 CV score: 2.445221e+12 
+Adaptive bandwidth: 64 CV score: 2.368359e+12 
+Adaptive bandwidth: 45 CV score: 2.334825e+12 
+Adaptive bandwidth: 36 CV score: 2.33059e+12 
+Adaptive bandwidth: 28 CV score: 2.370425e+12 
+Adaptive bandwidth: 38 CV score: 2.329224e+12 
+Adaptive bandwidth: 42 CV score: 2.331694e+12 
+Adaptive bandwidth: 37 CV score: 2.330045e+12 
+Adaptive bandwidth: 39 CV score: 2.33098e+12 
+Adaptive bandwidth: 37 CV score: 2.330045e+12 
+Adaptive bandwidth: 38 CV score: 2.329224e+12 </code></pre>
+</div>
 </div>
 <p>返回的 <code>londonhp.bw</code> 即是最优带宽值。</p>
 </section>
@@ -440,10 +881,96 @@ The new version of GWmodel 2.2-2 now is ready
 <h4 data-number="4.3.1.3" class="anchored" data-anchor-id="模型解算"><span class="header-section-number">4.3.1.3</span> 模型解算</h4>
 <p>在选好模型和带宽的基础上，使用 <code>gwr.basic()</code> 函数解算模型。</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>londonhp.model.gwr <span class="ot">&lt;-</span> <span class="fu">gwr.basic</span>(londonhp.model.formula, londonhp,</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a>                                <span class="at">bw =</span> londonhp.bw, <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">adaptive =</span> T, <span class="at">longlat =</span> F,</span>
-<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a>                                <span class="at">parallel.method =</span> <span class="st">"omp"</span>, <span class="at">parallel.arg =</span> <span class="dv">8</span>)</span>
-<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a>londonhp.model.gwr</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb71"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb71-1"><a href="#cb71-1" aria-hidden="true" tabindex="-1"></a>londonhp.model.gwr <span class="ot">&lt;-</span> <span class="fu">gwr.basic</span>(</span>
+<span id="cb71-2"><a href="#cb71-2" aria-hidden="true" tabindex="-1"></a>  londonhp.model.formula, londonhp,</span>
+<span id="cb71-3"><a href="#cb71-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">bw =</span> londonhp.bw, <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">adaptive =</span> T, <span class="at">longlat =</span> F)</span>
+<span id="cb71-4"><a href="#cb71-4" aria-hidden="true" tabindex="-1"></a>londonhp.model.gwr</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   ***********************************************************************
+   *                       Package   GWmodel                             *
+   ***********************************************************************
+   Program starts at: 2023-06-28 17:11:48 
+   Call:
+   gwr.basic(formula = londonhp.model.formula, data = londonhp, 
+    bw = londonhp.bw, kernel = "gaussian", adaptive = T, longlat = F)
+
+   Dependent (y) variable:  PURCHASE
+   Independent variables:  FLOORSZ PROF UNEMPLOY BATH2 BLD70S BLD60S TYPEFLAT TYPETRRD BLDPOSTW CENTHEAT
+   Number of data points: 2108
+   ***********************************************************************
+   *                    Results of Global Regression                     *
+   ***********************************************************************
+
+   Call:
+    lm(formula = formula, data = data)
+
+   Residuals:
+    Min      1Q  Median      3Q     Max 
+-173205  -22919   -2231   18707  281248 
+
+   Coefficients:
+                 Estimate Std. Error t value Pr(&gt;|t|)    
+   (Intercept) -115426.57    6696.92 -17.236  &lt; 2e-16 ***
+   FLOORSZ        1326.34      37.11  35.743  &lt; 2e-16 ***
+   PROF           3242.26     100.07  32.399  &lt; 2e-16 ***
+   UNEMPLOY       4951.36     436.71  11.338  &lt; 2e-16 ***
+   BATH2         41364.26    3946.35  10.482  &lt; 2e-16 ***
+   BLD70S       -23228.98    3528.55  -6.583 5.80e-11 ***
+   BLD60S       -19744.89    3517.62  -5.613 2.25e-08 ***
+   TYPEFLAT     -20923.34    3035.38  -6.893 7.19e-12 ***
+   TYPETRRD     -16584.53    2592.94  -6.396 1.96e-10 ***
+   BLDPOSTW     -11666.75    3395.45  -3.436 0.000602 ***
+   CENTHEAT       8894.71    3033.81   2.932 0.003406 ** 
+
+   ---Significance stars
+   Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1 
+   Residual standard error: 39220 on 2097 degrees of freedom
+   Multiple R-squared: 0.7248
+   Adjusted R-squared: 0.7235 
+   F-statistic: 552.3 on 10 and 2097 DF,  p-value: &lt; 2.2e-16 
+   ***Extra Diagnostic information
+   Residual sum of squares: 3.22509e+12
+   Sigma(hat): 39132.87
+   AIC:  50587.26
+   AICc:  50587.4
+   BIC:  48638.94
+   ***********************************************************************
+   *          Results of Geographically Weighted Regression              *
+   ***********************************************************************
+
+   *********************Model calibration information*********************
+   Kernel function: gaussian 
+   Adaptive bandwidth: 38 (number of nearest neighbours)
+   Regression points: the same locations as observations are used.
+   Distance metric: Euclidean distance metric is used.
+
+   ****************Summary of GWR coefficient estimates:******************
+                   Min.    1st Qu.     Median    3rd Qu.     Max.
+   Intercept -318194.10 -129274.95  -66519.16  -26778.49  39622.1
+   FLOORSZ       692.29     998.07    1211.63    1567.23   2299.0
+   PROF          728.46    1842.99    2456.09    3141.38   4659.3
+   UNEMPLOY    -4425.41     537.34    3401.48    7221.86  18305.6
+   BATH2      -33119.69   13067.79   27995.90   42945.77 101046.6
+   BLD70S     -61299.35  -28664.69  -17357.87   -6405.28  25042.9
+   BLD60S     -61162.61  -27967.20  -14947.43   -6644.56  43289.6
+   TYPEFLAT   -74602.25  -35372.44  -26510.37  -16993.47  60502.4
+   TYPETRRD   -64267.65  -21321.71  -14584.03   -9786.92  60897.0
+   BLDPOSTW  -100737.90  -17944.81  -10136.40   -4815.35  24091.5
+   CENTHEAT   -17509.75    3584.70    9495.27   15269.60  37500.1
+   ************************Diagnostic information*************************
+   Number of data points: 2108 
+   Effective number of parameters (2trace(S) - trace(S'S)): 391.1129 
+   Effective degrees of freedom (n-2trace(S) + trace(S'S)): 1716.887 
+   AICc (GWR book, Fotheringham, et al. 2002, p. 61, eq 2.33): 49687.11 
+   AIC (GWR book, Fotheringham, et al. 2002,GWR p. 96, eq. 4.22): 49310.55 
+   BIC (GWR book, Fotheringham, et al. 2002,GWR p. 61, eq. 2.34): 49096.43 
+   Residual sum of squares: 1.555303e+12 
+   R-square value:  0.8672878 
+   Adjusted R-square value:  0.8370379 
+
+   ***********************************************************************
+   Program stops at: 2023-06-28 17:11:49 </code></pre>
+</div>
 </div>
 <p>返回结果 <code>londonhp.model.gwr</code> 是一个列表，最重要的是以下两个键值对：</p>
 <ul>
@@ -452,7 +979,19 @@ The new version of GWmodel 2.2-2 now is ready
 </ul>
 <p>我们可以先将 <code>SDF</code> 的值的列名进行输出</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(londonhp.model.gwr<span class="sc">$</span>SDF<span class="sc">@</span>data)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(londonhp.model.gwr<span class="sc">$</span>SDF<span class="sc">@</span>data)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "Intercept"     "FLOORSZ"       "PROF"          "UNEMPLOY"     
+ [5] "BATH2"         "BLD70S"        "BLD60S"        "TYPEFLAT"     
+ [9] "TYPETRRD"      "BLDPOSTW"      "CENTHEAT"      "y"            
+[13] "yhat"          "residual"      "CV_Score"      "Stud_residual"
+[17] "Intercept_SE"  "FLOORSZ_SE"    "PROF_SE"       "UNEMPLOY_SE"  
+[21] "BATH2_SE"      "BLD70S_SE"     "BLD60S_SE"     "TYPEFLAT_SE"  
+[25] "TYPETRRD_SE"   "BLDPOSTW_SE"   "CENTHEAT_SE"   "Intercept_TV" 
+[29] "FLOORSZ_TV"    "PROF_TV"       "UNEMPLOY_TV"   "BATH2_TV"     
+[33] "BLD70S_TV"     "BLD60S_TV"     "TYPEFLAT_TV"   "TYPETRRD_TV"  
+[37] "BLDPOSTW_TV"   "CENTHEAT_TV"   "Local_R2"     </code></pre>
+</div>
 </div>
 <p>可见，该变量包含以下列：</p>
 <ul>
@@ -464,11 +1003,23 @@ The new version of GWmodel 2.2-2 now is ready
 </ul>
 <p>我们可以对这些系数进行可视化输出</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(londonhp.model.gwr<span class="sc">$</span>SDF) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"Intercept"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(londonhp.model.gwr<span class="sc">$</span>SDF) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"Intercept"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Variable(s) "Intercept" contains positive and negative values, so midpoint is set to 0. Set midpoint = NA to show the full spectrum of the color palette.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="04-数据分析_files/figure-html/unnamed-chunk-18-1.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 <p>下面我们使用数据集 <code>LondonBorough</code> 制作完整的专题图。</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(londonborough) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(londonhp.model.gwr<span class="sc">$</span>SDF) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"Intercept"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(londonborough) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(londonhp.model.gwr<span class="sc">$</span>SDF) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"Intercept"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stderr">
+<pre><code>Variable(s) "Intercept" contains positive and negative values, so midpoint is set to 0. Set midpoint = NA to show the full spectrum of the color palette.</code></pre>
+</div>
+<div class="cell-output-display">
+<p><img src="04-数据分析_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 </section>
 </section>
@@ -487,44 +1038,153 @@ The new version of GWmodel 2.2-2 now is ready
 </ul>
 <p>函数 <code>gwss()</code> 提供该功能。GWSS 的使用没有像 GWR 那么复杂，只是计算几个统计量。使用方法如下</p>
 <div class="cell" data-scrolled="true">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>londonhp.gwss <span class="ot">&lt;-</span> <span class="fu">gwss</span>(londonhp, <span class="at">vars =</span> <span class="fu">c</span>(<span class="st">"PURCHASE"</span>, <span class="st">"FLOORSZ"</span>, <span class="st">"PROF"</span>, <span class="st">"UNEMPLOY"</span>), </span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">adaptive =</span> <span class="cn">TRUE</span>, <span class="at">bw =</span> <span class="dv">100</span>, <span class="at">longlat =</span> F)</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>londonhp.gwss</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a>londonhp.gwss <span class="ot">&lt;-</span> <span class="fu">gwss</span>(londonhp, <span class="at">vars =</span> <span class="fu">c</span>(<span class="st">"PURCHASE"</span>, <span class="st">"FLOORSZ"</span>, <span class="st">"PROF"</span>, <span class="st">"UNEMPLOY"</span>), </span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>                      <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">adaptive =</span> <span class="cn">TRUE</span>, <span class="at">bw =</span> <span class="dv">100</span>, <span class="at">longlat =</span> F)</span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a>londonhp.gwss</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   ***********************************************************************
+   *                       Package   GWmodel                             *
+   ***********************************************************************
+
+   ***********************Calibration information*************************
+
+   Local summary statistics calculated for variables:
+    PURCHASE FLOORSZ PROF UNEMPLOY
+   Number of summary points: 2108
+   Kernel function: gaussian 
+   Summary points: the same locations as observations are used.
+   Adaptive bandwidth: 100 (number of nearest neighbours)
+   Distance metric: Euclidean distance metric is used.
+
+   ************************Local Summary Statistics:**********************
+   Summary information for Local means:
+                     Min.    1st Qu.     Median    3rd Qu.       Max.
+   PURCHASE_LM 1.0368e+05 1.2399e+05 1.4048e+05 1.6094e+05 186983.753
+   FLOORSZ_LM  7.4837e+01 8.1833e+01 8.4555e+01 8.7412e+01     92.044
+   PROF_LM     2.8395e+01 3.5084e+01 3.8918e+01 4.2598e+01     50.381
+   UNEMPLOY_LM 3.8043e+00 5.0748e+00 5.9113e+00 6.9467e+00      9.189
+   Summary information for local standard deviation :
+                      Min.    1st Qu.     Median    3rd Qu.       Max.
+   PURCHASE_LSD 41586.5582 56570.5226 68538.3666 80193.7730 96026.1792
+   FLOORSZ_LSD     27.8241    29.8802    31.9630    33.9498    37.3879
+   PROF_LSD         6.4589     8.2712     9.5373    10.8088    13.7212
+   UNEMPLOY_LSD     1.1012     1.6838     2.1262     2.5122     2.9883
+   Summary information for local variance :
+                       Min.    1st Qu.     Median    3rd Qu.       Max.
+   PURCHASE_LVar 1.7294e+09 3.2002e+09 4.6975e+09 6.4310e+09 9.2210e+09
+   FLOORSZ_LVar  7.7418e+02 8.9283e+02 1.0216e+03 1.1526e+03 1.3979e+03
+   PROF_LVar     4.1717e+01 6.8412e+01 9.0961e+01 1.1683e+02 1.8827e+02
+   UNEMPLOY_LVar 1.2126e+00 2.8351e+00 4.5209e+00 6.3110e+00 8.9299e+00
+   Summary information for Local skewness:
+                      Min.   1st Qu.    Median   3rd Qu.   Max.
+   PURCHASE_LSKe  1.424002  1.995719  2.261538  2.443722 3.3553
+   FLOORSZ_LSKe   0.703198  1.117976  1.284149  1.531301 2.1631
+   PROF_LSKe     -0.540195 -0.022425  0.195211  0.495701 0.9970
+   UNEMPLOY_LSKe -0.262581  0.283762  0.720260  1.078178 2.0067
+   Summary information for localized coefficient of variation:
+                   Min. 1st Qu.  Median 3rd Qu.   Max.
+   PURCHASE_LCV 0.40048 0.44784 0.47996 0.50065 0.5392
+   FLOORSZ_LCV  0.31658 0.36421 0.38368 0.40122 0.4390
+   PROF_LCV     0.17034 0.22437 0.24708 0.26904 0.3329
+   UNEMPLOY_LCV 0.24824 0.31042 0.33447 0.37361 0.4660
+   Summary information for localized Covariance and Correlation between these variables:
+                                         Min.     1st Qu.      Median
+   Cov_PURCHASE.FLOORSZ            9.1822e+05  1.2667e+06  1.7095e+06
+   Cov_PURCHASE.PROF               7.9696e+04  1.6391e+05  2.6170e+05
+   Cov_PURCHASE.UNEMPLOY          -4.8018e+04 -3.3010e+04 -2.7481e+04
+   Cov_FLOORSZ.PROF               -3.0740e+01  1.4644e+00  1.4510e+01
+   Cov_FLOORSZ.UNEMPLOY           -1.8184e+01 -9.7601e+00 -6.4650e+00
+   Cov_PROF.UNEMPLOY              -2.4979e+01 -1.5256e+01 -1.1264e+01
+   Corr_PURCHASE.FLOORSZ           6.1369e-01  7.2888e-01  7.6928e-01
+   Corr_PURCHASE.PROF              2.6387e-01  3.3028e-01  3.6297e-01
+   Corr_PURCHASE.UNEMPLOY         -3.5095e-01 -2.3525e-01 -1.9890e-01
+   Corr_FLOORSZ.PROF              -9.2459e-02  5.4290e-03  4.5056e-02
+   Corr_FLOORSZ.UNEMPLOY          -2.7446e-01 -1.6193e-01 -1.0279e-01
+   Corr_PROF.UNEMPLOY             -8.4840e-01 -6.6314e-01 -5.8815e-01
+   Spearman_rho_PURCHASE.FLOORSZ   5.1056e-01  6.3550e-01  7.0561e-01
+   Spearman_rho_PURCHASE.PROF      2.3277e-01  3.3909e-01  3.7563e-01
+   Spearman_rho_PURCHASE.UNEMPLOY -4.1116e-01 -2.8168e-01 -2.2578e-01
+   Spearman_rho_FLOORSZ.PROF      -1.2790e-01 -3.8725e-02 -3.1999e-03
+   Spearman_rho_FLOORSZ.UNEMPLOY  -2.6861e-01 -1.6102e-01 -9.4537e-02
+   Spearman_rho_PROF.UNEMPLOY     -7.7747e-01 -6.4699e-01 -5.7788e-01
+                                      3rd Qu.        Max.
+   Cov_PURCHASE.FLOORSZ            2.0685e+06  2.5674e+06
+   Cov_PURCHASE.PROF               3.2068e+05  5.2653e+05
+   Cov_PURCHASE.UNEMPLOY          -2.2201e+04 -8.8273e+03
+   Cov_FLOORSZ.PROF                2.7657e+01  1.1376e+02
+   Cov_FLOORSZ.UNEMPLOY           -3.5871e+00  4.1757e+00
+   Cov_PROF.UNEMPLOY              -8.5850e+00 -4.7220e+00
+   Corr_PURCHASE.FLOORSZ           8.0060e-01  8.5960e-01
+   Corr_PURCHASE.PROF              3.9862e-01  5.4810e-01
+   Corr_PURCHASE.UNEMPLOY         -1.6069e-01 -9.1500e-02
+   Corr_FLOORSZ.PROF               9.3242e-02  3.4530e-01
+   Corr_FLOORSZ.UNEMPLOY          -5.3033e-02  5.1900e-02
+   Corr_PROF.UNEMPLOY             -5.3682e-01 -3.6490e-01
+   Spearman_rho_PURCHASE.FLOORSZ   7.5496e-01  8.3060e-01
+   Spearman_rho_PURCHASE.PROF      4.2373e-01  5.3690e-01
+   Spearman_rho_PURCHASE.UNEMPLOY -1.7347e-01 -8.1000e-02
+   Spearman_rho_FLOORSZ.PROF       4.1846e-02  2.9670e-01
+   Spearman_rho_FLOORSZ.UNEMPLOY  -5.9230e-02  3.9500e-02
+   Spearman_rho_PROF.UNEMPLOY     -5.2421e-01 -3.6620e-01
+
+   ************************************************************************</code></pre>
+</div>
 </div>
 <p>同样，变量 <code>londonhp.gwss</code> 是一个列表，其中有一个 <code>SDF</code> 的键值对，包含了每个要素上 GWSS 统计量的计算结果。</p>
 <div class="cell" data-scrolled="true">
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(londonhp.gwss<span class="sc">$</span>SDF<span class="sc">@</span>data)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(londonhp.gwss<span class="sc">$</span>SDF<span class="sc">@</span>data)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] "PURCHASE_LM"                    "FLOORSZ_LM"                    
+ [3] "PROF_LM"                        "UNEMPLOY_LM"                   
+ [5] "PURCHASE_LSD"                   "FLOORSZ_LSD"                   
+ [7] "PROF_LSD"                       "UNEMPLOY_LSD"                  
+ [9] "PURCHASE_LVar"                  "FLOORSZ_LVar"                  
+[11] "PROF_LVar"                      "UNEMPLOY_LVar"                 
+[13] "PURCHASE_LSKe"                  "FLOORSZ_LSKe"                  
+[15] "PROF_LSKe"                      "UNEMPLOY_LSKe"                 
+[17] "PURCHASE_LCV"                   "FLOORSZ_LCV"                   
+[19] "PROF_LCV"                       "UNEMPLOY_LCV"                  
+[21] "Cov_PURCHASE.FLOORSZ"           "Cov_PURCHASE.PROF"             
+[23] "Cov_PURCHASE.UNEMPLOY"          "Cov_FLOORSZ.PROF"              
+[25] "Cov_FLOORSZ.UNEMPLOY"           "Cov_PROF.UNEMPLOY"             
+[27] "Corr_PURCHASE.FLOORSZ"          "Corr_PURCHASE.PROF"            
+[29] "Corr_PURCHASE.UNEMPLOY"         "Corr_FLOORSZ.PROF"             
+[31] "Corr_FLOORSZ.UNEMPLOY"          "Corr_PROF.UNEMPLOY"            
+[33] "Spearman_rho_PURCHASE.FLOORSZ"  "Spearman_rho_PURCHASE.PROF"    
+[35] "Spearman_rho_PURCHASE.UNEMPLOY" "Spearman_rho_FLOORSZ.PROF"     
+[37] "Spearman_rho_FLOORSZ.UNEMPLOY"  "Spearman_rho_PROF.UNEMPLOY"    </code></pre>
+</div>
 </div>
 <p>我们也可以将其进行可视化</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(londonborough) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(londonhp.gwss<span class="sc">$</span>SDF) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE_LM"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span>
-<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(londonborough) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(londonhp.gwss<span class="sc">$</span>SDF) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"Corr_PURCHASE.PROF"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(londonborough) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(londonhp.gwss<span class="sc">$</span>SDF) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"PURCHASE_LM"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="04-数据分析_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid" width="672"></p>
+</div>
+<div class="sourceCode cell-code" id="cb84"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb84-1"><a href="#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(londonborough) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(londonhp.gwss<span class="sc">$</span>SDF) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"Corr_PURCHASE.PROF"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="04-数据分析_files/figure-html/unnamed-chunk-22-2.png" class="img-fluid" width="672"></p>
+</div>
 </div>
 </section>
 <section id="gwpca" class="level3" data-number="4.3.3">
 <h3 data-number="4.3.3" class="anchored" data-anchor-id="gwpca"><span class="header-section-number">4.3.3</span> GWPCA</h3>
 <p>GWPCA 是一种局部加权的 PCA 算法，用于分析局部尺度下主成分的不同。</p>
 <p>在进行主成分分析之前，我们需要对数据进行归一化处理，处理的方法是 <span class="math display">\[ \tilde{x}_i = \frac{x_i - \bar{x}}{\mathrm{Var}(x)} \]</span> 在 R 中，使用 <code>scale</code> 函数即可</p>
-<div class="cell" data-execution_count="5">
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>londonhp.scaled <span class="ot">&lt;-</span> londonhp</span>
-<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>londonhp.scaled<span class="sc">@</span>data <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">scale</span>(<span class="fu">as.matrix</span>(londonhp<span class="sc">@</span>data[,<span class="fu">c</span>(<span class="st">"FLOORSZ"</span>, <span class="st">"PROF"</span>, <span class="st">"UNEMPLOY"</span>)])))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a>londonhp.scaled <span class="ot">&lt;-</span> londonhp</span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a>londonhp.scaled<span class="sc">@</span>data <span class="ot">&lt;-</span> <span class="fu">as.data.frame</span>(<span class="fu">scale</span>(<span class="fu">as.matrix</span>(londonhp<span class="sc">@</span>data[,<span class="fu">c</span>(<span class="st">"FLOORSZ"</span>, <span class="st">"PROF"</span>, <span class="st">"UNEMPLOY"</span>)])))</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>使用 <code>gwpca()</code> 函数进行 GWPCA 解算。</p>
-<div class="cell" data-execution_count="6">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>londonhp.gwpca <span class="ot">&lt;-</span> <span class="fu">gwpca</span>(londonhp.scaled, <span class="at">vars =</span> <span class="fu">c</span>(<span class="st">"FLOORSZ"</span>, <span class="st">"PROF"</span>, <span class="st">"UNEMPLOY"</span>), <span class="at">k =</span> <span class="dv">2</span>,</span>
-<span id="cb28-2"><a href="#cb28-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">adaptive =</span> <span class="cn">TRUE</span>, <span class="at">bw =</span> <span class="dv">100</span>, <span class="at">longlat =</span> F)</span>
-<span id="cb28-3"><a href="#cb28-3" aria-hidden="true" tabindex="-1"></a>londonhp.gwpca</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning message in proj4string(data):
-“CRS object has comment, which is lost in output”
-Warning message in showSRID(uprojargs, format = "PROJ", multiline = "NO", prefer_proj = prefer_proj):
-“Discarded datum Unknown based on Airy 1830 ellipsoid in CRS definition”</code></pre>
-</div>
-<div class="cell-output cell-output-display">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb86"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb86-1"><a href="#cb86-1" aria-hidden="true" tabindex="-1"></a>londonhp.gwpca <span class="ot">&lt;-</span> <span class="fu">gwpca</span>(londonhp.scaled, <span class="at">vars =</span> <span class="fu">c</span>(<span class="st">"FLOORSZ"</span>, <span class="st">"PROF"</span>, <span class="st">"UNEMPLOY"</span>), <span class="at">k =</span> <span class="dv">2</span>,</span>
+<span id="cb86-2"><a href="#cb86-2" aria-hidden="true" tabindex="-1"></a>                        <span class="at">kernel =</span> <span class="st">"gaussian"</span>, <span class="at">adaptive =</span> <span class="cn">TRUE</span>, <span class="at">bw =</span> <span class="dv">100</span>, <span class="at">longlat =</span> F)</span>
+<span id="cb86-3"><a href="#cb86-3" aria-hidden="true" tabindex="-1"></a>londonhp.gwpca</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
 <pre><code>   ***********************************************************************
    *                       Package   GWmodel                             *
    ***********************************************************************
-   Program starts at: 2021-01-14 10:58:44 
+   Program starts at: 2023-06-28 17:12:01 
    Call:
    
    Variables concerned:  FLOORSZ PROF UNEMPLOY
@@ -566,7 +1226,7 @@ UNEMPLOY -0.702  0.055  0.710
    Cumulative 85.087  88.288 89.655  91.399 95.067
 
    ***********************************************************************
-   Program stops at: 2021-01-14 10:58:57 </code></pre>
+   Program stops at: 2023-06-28 17:16:04 </code></pre>
 </div>
 </div>
 <p>返回值 <code>londonhp.gwpca</code> 也是一个列表，主要有以下几个键值对：</p>
@@ -577,30 +1237,19 @@ UNEMPLOY -0.702  0.055  0.710
 <li><code>local.PV</code> : 各个要素上的特征值</li>
 </ul>
 <p>我们可以将优胜变量进行可视化</p>
-<div class="cell" data-execution_count="7">
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(londonborough) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(londonhp.gwpca<span class="sc">$</span>SDF) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"win_var_PC1"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>Warning message in sp::proj4string(obj):
-“CRS object has comment, which is lost in output”</code></pre>
-</div>
-<div class="cell-output cell-output-display">
-<p><img src="04-数据分析_files/figure-html/cell-26-output-2.png" class="img-fluid"></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb88"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb88-1"><a href="#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="fu">tm_shape</span>(londonborough) <span class="sc">+</span> <span class="fu">tm_polygons</span>(<span class="at">col =</span> <span class="st">"white"</span>) <span class="sc">+</span> <span class="fu">tm_shape</span>(londonhp.gwpca<span class="sc">$</span>SDF) <span class="sc">+</span> <span class="fu">tm_symbols</span>(<span class="at">col =</span> <span class="st">"win_var_PC1"</span>, <span class="at">size =</span> <span class="fl">0.2</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="04-数据分析_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 <p>也可以对载荷矩阵进行可视化，以分析其空间异质性。 该可视化方法在 <code>tmap</code> 包中没有，因此需要使用 <code>GWmodel</code> 包中的一个函数绘制，而此时就不能使用 <code>tmap</code> 来显示底图，需要使用 <code>plot()</code> 函数来显示底图。</p>
-<div class="cell" data-execution_count="10">
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>londonhp.loadings <span class="ot">&lt;-</span> londonhp.gwpca<span class="sc">$</span>loadings[,,<span class="dv">1</span>]</span>
-<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(londonborough, <span class="at">asp =</span> <span class="dv">1</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>, <span class="at">yaxt =</span> <span class="st">"n"</span>, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">col =</span> <span class="st">"white"</span>)</span>
-<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glyph.plot</span>(londonhp.loadings, londonhp.gwpca<span class="sc">$</span>SDF<span class="sc">@</span>coords, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<p><img src="04-数据分析_files/figure-html/cell-27-output-1.png" class="img-fluid"></p>
-</div>
-</div>
-<div class="cell" data-execution_count="33">
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(bss.background, <span class="at">asp =</span> <span class="dv">1</span>, <span class="at">type =</span> <span class="st">"l"</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>, <span class="at">yaxt =</span> <span class="st">"n"</span>, </span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>   <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">col =</span> <span class="st">"grey"</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-display">
-<p><img src="04-数据分析_files/figure-html/cell-28-output-1.png" class="img-fluid"></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a>londonhp.loadings <span class="ot">&lt;-</span> londonhp.gwpca<span class="sc">$</span>loadings[,,<span class="dv">1</span>]</span>
+<span id="cb89-2"><a href="#cb89-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(londonborough, <span class="at">asp =</span> <span class="dv">1</span>, <span class="at">xaxt =</span> <span class="st">"n"</span>, <span class="at">yaxt =</span> <span class="st">"n"</span>, <span class="at">xlab =</span> <span class="st">""</span>, <span class="at">ylab =</span> <span class="st">""</span>, <span class="at">bty =</span> <span class="st">"n"</span>, <span class="at">col =</span> <span class="st">"white"</span>)</span>
+<span id="cb89-3"><a href="#cb89-3" aria-hidden="true" tabindex="-1"></a><span class="fu">glyph.plot</span>(londonhp.loadings, londonhp.gwpca<span class="sc">$</span>SDF<span class="sc">@</span>coords, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="复制到剪贴板" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="04-数据分析_files/figure-html/unnamed-chunk-26-1.png" class="img-fluid" width="672"></p>
 </div>
 </div>
 
@@ -841,6 +1490,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
 });
+</script>
+<script src="https://giscus.app/client.js" data-repo="hpdell/RTraining" data-repo-id="R_kgDOJ1O3-Q" data-category="Comments" data-category-id="DIC_kwDOJ1O3-c4CXiX-" data-mapping="title" data-reactions-enabled="1" data-emit-metadata="0" data-input-position="top" data-theme="light" data-lang="zh-CN" crossorigin="anonymous" async="">
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
