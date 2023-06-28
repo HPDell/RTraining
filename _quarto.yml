@@ -14,6 +14,17 @@ book:
     - 03-数据可视化.qmd
     - 04-数据分析.qmd
 
+comments: 
+  giscus: 
+    repo: hpdell/RTraining
+    repo-id: R_kgDOJ1O3-Q
+    category: Comments
+    category-id: DIC_kwDOJ1O3-c4CXiX-
+    mapping: title
+    input-position: top
+    language: zh-CN
+    reactions-enabled: true
+
 format:
   html:
     theme: cosmo
