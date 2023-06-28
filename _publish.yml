@@ -1,0 +1,4 @@
+- source: project
+  quarto-pub:
+    - id: 7c179fc9-324f-429d-b9f6-e327148db238
+      url: 'https://aegon-huke.quarto.pub/r-span-basics'
